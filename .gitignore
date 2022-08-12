@@ -12,4 +12,11 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
+
+# Mac OS X files
+.DS_Store
+
+# IDE 配置目录
+.idea/
+.vscode/
