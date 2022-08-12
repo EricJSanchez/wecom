@@ -1,4 +1,4 @@
-module wecom
+module github.com/EricJSanchez/wecom
 
 go 1.18
 

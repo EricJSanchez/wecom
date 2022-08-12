@@ -2,11 +2,11 @@ package test
 
 import (
 	"fmt"
-	"testing"
-	"wecom"
+	"github.com/EricJSanchez/wecom"
 	"github.com/EricJSanchez/wecom/cache"
 	"github.com/EricJSanchez/wecom/config"
 	"github.com/EricJSanchez/wecom/contact"
+	"testing"
 )
 
 func NewInstance(name, agentId string) *wecom.Wework {
