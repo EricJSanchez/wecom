@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cast"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/util"
 )
 
 const (

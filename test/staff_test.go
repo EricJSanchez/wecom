@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 	"wecom"
-	"wecom/cache"
-	"wecom/config"
-	"wecom/contact"
+	"github.com/EricJSanchez/wecom/cache"
+	"github.com/EricJSanchez/wecom/config"
+	"github.com/EricJSanchez/wecom/contact"
 )
 
 func NewInstance(name, agentId string) *wecom.Wework {

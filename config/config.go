@@ -2,7 +2,7 @@
 package config
 
 import (
-	"wecom/cache"
+	"github.com/EricJSanchez/wecom/cache"
 )
 
 // Config for 企业微信

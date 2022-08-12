@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/spf13/cast"
 	"time"
-	"wecom/WeWorkFinanceSDK"
-	"wecom/credential"
+	"github.com/EricJSanchez/wecom/WeWorkFinanceSDK"
+	"github.com/EricJSanchez/wecom/credential"
 )
 
 // GetMessageInstance 获取会话归档实例

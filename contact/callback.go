@@ -3,7 +3,7 @@ package contact
 import (
 	"encoding/xml"
 	"fmt"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/util"
 )
 
 // SignatureOptions 微信服务器验证参数

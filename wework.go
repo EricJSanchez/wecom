@@ -1,16 +1,16 @@
 package wecom
 
 import (
-	"wecom/application"
-	"wecom/config"
-	"wecom/contact"
-	"wecom/context"
-	"wecom/conversation"
-	"wecom/credential"
-	"wecom/externalcontact"
-	"wecom/material"
-	"wecom/message"
-	"wecom/oauth"
+	"github.com/EricJSanchez/wecom/application"
+	"github.com/EricJSanchez/wecom/config"
+	"github.com/EricJSanchez/wecom/contact"
+	"github.com/EricJSanchez/wecom/context"
+	"github.com/EricJSanchez/wecom/conversation"
+	"github.com/EricJSanchez/wecom/credential"
+	"github.com/EricJSanchez/wecom/externalcontact"
+	"github.com/EricJSanchez/wecom/material"
+	"github.com/EricJSanchez/wecom/message"
+	"github.com/EricJSanchez/wecom/oauth"
 )
 
 type Wework struct {

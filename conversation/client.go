@@ -2,10 +2,10 @@ package conversation
 
 import (
 	"sync"
-	"wecom/cache"
-	"wecom/config"
-	"wecom/context"
-	"wecom/credential"
+	"github.com/EricJSanchez/wecom/cache"
+	"github.com/EricJSanchez/wecom/config"
+	"github.com/EricJSanchez/wecom/context"
+	"github.com/EricJSanchez/wecom/credential"
 )
 
 // Client 会话内容归档实例

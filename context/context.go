@@ -1,8 +1,8 @@
 package context
 
 import (
-	"wecom/config"
-	"wecom/credential"
+	"github.com/EricJSanchez/wecom/config"
+	"github.com/EricJSanchez/wecom/credential"
 )
 
 // Context struct

@@ -3,8 +3,8 @@ package credential
 import (
 	"encoding/json"
 	"fmt"
-	"wecom/cache"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/cache"
+	"github.com/EricJSanchez/wecom/util"
 	"sync"
 	"time"
 )

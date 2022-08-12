@@ -1,10 +1,10 @@
 package externalcontact
 
 import (
-	"wecom/cache"
-	"wecom/config"
-	"wecom/context"
-	"wecom/credential"
+	"github.com/EricJSanchez/wecom/cache"
+	"github.com/EricJSanchez/wecom/config"
+	"github.com/EricJSanchez/wecom/context"
+	"github.com/EricJSanchez/wecom/credential"
 )
 
 // Client 外部联系人实例

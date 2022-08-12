@@ -3,7 +3,7 @@ package material
 import (
 	"encoding/json"
 	"fmt"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/util"
 )
 
 // MediaType 媒体文件类型

@@ -3,7 +3,7 @@ package message
 import (
 	"encoding/json"
 	"fmt"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/util"
 )
 
 const (

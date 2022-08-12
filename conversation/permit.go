@@ -3,8 +3,8 @@ package conversation
 import (
 	"encoding/json"
 	"fmt"
-	"wecom/contact"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/contact"
+	"github.com/EricJSanchez/wecom/util"
 )
 
 const (

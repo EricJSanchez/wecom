@@ -3,8 +3,8 @@ package oauth
 import (
 	"encoding/json"
 	"fmt"
-	"wecom/credential"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/credential"
+	"github.com/EricJSanchez/wecom/util"
 	"net/url"
 )
 

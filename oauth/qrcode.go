@@ -2,7 +2,7 @@ package oauth
 
 import (
 	"fmt"
-	"wecom/util"
+	"github.com/EricJSanchez/wecom/util"
 	"net/url"
 )
 
