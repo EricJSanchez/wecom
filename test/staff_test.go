@@ -9,9 +9,9 @@ import (
 	"testing"
 )
 
-func NewInstance(name, agentId string) *wecom.Wework {
+func NewInstance(name, agentId string) *wecom.Wecom {
 	redisCache := cache.NewRedis(&cache.RedisOpts{
-		Host:        "192.168.0.0:6379",
+		Host:        "127.0.0.1:6379",
 		Password:    "111111",
 		Database:    4,
 		MaxIdle:     40,
@@ -20,7 +20,7 @@ func NewInstance(name, agentId string) *wecom.Wework {
 	})
 
 	// TODO 读取数据库
-	wk := wecom.NewWework(&config.Config{
+	wk := wecom.NewWecom(&config.Config{
 		CorpID:         name,
 		CorpSecret:     "",
 		AgentID:        agentId,
@@ -30,13 +30,13 @@ func NewInstance(name, agentId string) *wecom.Wework {
 		RasPrivateKey:  "",
 		Token:          "",
 		EncodingAESKey: "",
-		ContactSecret:  "***secret***",
+		ContactSecret:  "YNW************Z0",
 		CustomerSecret: "",
 	})
 	return wk
 }
 
-func Wework(names ...string) *wecom.Wework {
+func Wework(names ...string) *wecom.Wecom {
 	if len(names) > 0 {
 		var name = ""
 		var agentId = ""
@@ -52,7 +52,7 @@ func Wework(names ...string) *wecom.Wework {
 }
 
 func TestStaffUserId(t *testing.T) {
-	weCom, err := Wework("wwe4f9*******36d6").GetContact()
+	weCom, err := Wework("*****").GetContact()
 	if err != nil {
 		t.Error(err)
 		return

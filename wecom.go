@@ -13,56 +13,56 @@ import (
 	"github.com/EricJSanchez/wecom/oauth"
 )
 
-type Wework struct {
+type Wecom struct {
 	ctx *context.Context
 }
 
-func NewWework(cfg *config.Config) *Wework {
+func NewWecom(cfg *config.Config) *Wecom {
 	defaultAkHandle := credential.NewWorkAccessToken(cfg.CorpID, cfg.CorpSecret, credential.CacheKeyWorkPrefix, cfg.Cache)
 	ctx := &context.Context{
 		Config:            cfg,
 		AccessTokenHandle: defaultAkHandle,
 	}
-	return &Wework{ctx: ctx}
+	return &Wecom{ctx: ctx}
 }
 
 // GetContext get Context
-func (w *Wework) GetContext() *context.Context {
+func (w *Wecom) GetContext() *context.Context {
 	return w.ctx
 }
 
 // GetContact get contact
-func (w *Wework) GetContact() (*contact.Client, error) {
+func (w *Wecom) GetContact() (*contact.Client, error) {
 	return contact.NewClient(w.ctx.Config)
 }
 
 // GetApplication get application
-func (w *Wework) GetApplication() (*application.Client, error) {
+func (w *Wecom) GetApplication() (*application.Client, error) {
 	return application.NewClient(w.ctx.Config)
 }
 
 // GetExternalContact get external contact
-func (w *Wework) GetExternalContact() (*externalcontact.Client, error) {
+func (w *Wecom) GetExternalContact() (*externalcontact.Client, error) {
 	return externalcontact.NewClient(w.ctx.Config)
 }
 
 // GetConversation get conversation
-func (w *Wework) GetConversation() (*conversation.Client, error) {
+func (w *Wecom) GetConversation() (*conversation.Client, error) {
 	return conversation.NewClient(w.ctx.Config)
 }
 
 // GetOAuth get oauth
-func (w *Wework) GetOAuth() (*oauth.Client, error) {
+func (w *Wecom) GetOAuth() (*oauth.Client, error) {
 	return oauth.NewClient(w.ctx.Config)
 }
 
 // GetMassage get message
-func (w *Wework) GetMassage() (*message.Client, error) {
+func (w *Wecom) GetMassage() (*message.Client, error) {
 	return message.NewClient(w.ctx.Config)
 }
 
 // GetMaterial get material
-func (w *Wework) GetMaterial() (*material.Client, error) {
+func (w *Wecom) GetMaterial() (*material.Client, error) {
 	return material.NewClient(w.ctx.Config)
 }
 
