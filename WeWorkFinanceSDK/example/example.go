@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 
-	"gww-crontab/pkg/WeWorkFinanceSDK"
+	"github.com/EricJSanchez/wecom/WeWorkFinanceSDK"
 )
 
 func main() {
