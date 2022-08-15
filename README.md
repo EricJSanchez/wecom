@@ -7,8 +7,8 @@
 下面给出实际案例 dockerfile 配置
 ```azure
 FROM golang:1.18
-
-COPY lib/libWeWorkFinanceSdk_C.so /usr/local/lib
+# lib文件夹就是WeWorkFinanceSDK文件夹中的 lib文件夹，请编译进容器中，否则程序会报文件不存在
+COPY lib/* /usr/local/lib/
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
