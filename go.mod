@@ -3,7 +3,6 @@ module github.com/EricJSanchez/wecom
 go 1.18
 
 require (
-	github.com/NICEXAI/WeWorkFinanceSDK v1.0.13
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
 	github.com/gomodule/redigo v1.8.9
 	github.com/spf13/cast v1.5.0
