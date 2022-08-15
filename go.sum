@@ -1,3 +1,5 @@
+github.com/NICEXAI/WeWorkFinanceSDK v1.0.13 h1:flHWUjzyMjYx6Do/bkf4fRTOZ6zVZ/TKu4ViA5S1s0c=
+github.com/NICEXAI/WeWorkFinanceSDK v1.0.13/go.mod h1:pLCU/IYUy+uOy1e+o9dfoPaaNMS7D5FPx7XI0jI/DKY=
 github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b h1:L/QXpzIa3pOvUGt1D1lA5KjYhPBAN/3iWdP7xeFS9F0=
 github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b/go.mod h1:H0wQNHz2YrLsuXOZozoeDmnHXkNCRmMW0gwFWDfEZDA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
