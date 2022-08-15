@@ -2,8 +2,8 @@ package conversation
 
 import (
 	"fmt"
+	"github.com/EricJSanchez/wecom/WeWorkFinanceSDK"
 	"github.com/EricJSanchez/wecom/credential"
-	"github.com/NICEXAI/WeWorkFinanceSDK"
 	"github.com/spf13/cast"
 	"time"
 )
