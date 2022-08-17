@@ -28,7 +28,7 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 	defaultAkHandle := credential.NewWorkAccessToken(
 		cfg.CorpID,
 		cfg.AgentSecret,
-		credential.CacheKeyWorkPrefix+"application_"+cfg.CorpID+"_",
+		credential.CacheKeyWorkPrefix+"application:"+cfg.CorpID+":"+cfg.AgentID,
 		cfg.Cache)
 	ctx := &context.Context{
 		Config:            cfg,

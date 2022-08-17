@@ -19,10 +19,10 @@ const (
 	//CacheKeyMiniProgramPrefix 小程序cache key前缀
 	CacheKeyMiniProgramPrefix = "gowechat_miniprogram_"
 	//CacheKeyWorkPrefix 企业微信cache key前缀
-	CacheKeyWorkPrefix = "wx"
+	CacheKeyWorkPrefix = "wx:accessToken:"
 )
 
-//DefaultAccessToken 默认AccessToken 获取
+// DefaultAccessToken 默认AccessToken 获取
 type DefaultAccessToken struct {
 	appID           string
 	appSecret       string
@@ -31,7 +31,7 @@ type DefaultAccessToken struct {
 	accessTokenLock *sync.Mutex
 }
 
-//NewDefaultAccessToken new DefaultAccessToken
+// NewDefaultAccessToken new DefaultAccessToken
 func NewDefaultAccessToken(appID, appSecret, cacheKeyPrefix string, cache cache.Cache) AccessTokenHandle {
 	if cache == nil {
 		panic("cache is ineed")
@@ -45,7 +45,7 @@ func NewDefaultAccessToken(appID, appSecret, cacheKeyPrefix string, cache cache.
 	}
 }
 
-//ResAccessToken struct
+// ResAccessToken struct
 type ResAccessToken struct {
 	util.CommonError
 
@@ -53,7 +53,7 @@ type ResAccessToken struct {
 	ExpiresIn   int64  `json:"expires_in"`
 }
 
-//GetAccessToken 获取access_token,先从cache中获取，没有则从服务端获取
+// GetAccessToken 获取access_token,先从cache中获取，没有则从服务端获取
 func (ak *DefaultAccessToken) GetAccessToken() (accessToken string, err error) {
 	// 先从cache中取
 	accessTokenCacheKey := fmt.Sprintf("%s_access_token_%s", ak.cacheKeyPrefix, ak.appID)
@@ -86,7 +86,7 @@ func (ak *DefaultAccessToken) GetAccessToken() (accessToken string, err error) {
 	return
 }
 
-//WorkAccessToken 企业微信AccessToken 获取
+// WorkAccessToken 企业微信AccessToken 获取
 type WorkAccessToken struct {
 	CorpID          string
 	CorpSecret      string
@@ -95,7 +95,7 @@ type WorkAccessToken struct {
 	accessTokenLock *sync.Mutex
 }
 
-//NewWorkAccessToken new WorkAccessToken
+// NewWorkAccessToken new WorkAccessToken
 func NewWorkAccessToken(corpID, corpSecret, cacheKeyPrefix string, cache cache.Cache) AccessTokenHandle {
 	if cache == nil {
 		panic("cache the not exist")
@@ -109,13 +109,12 @@ func NewWorkAccessToken(corpID, corpSecret, cacheKeyPrefix string, cache cache.C
 	}
 }
 
-//GetAccessToken 企业微信获取access_token,先从cache中获取，没有则从服务端获取
+// GetAccessToken 企业微信获取access_token,先从cache中获取，没有则从服务端获取
 func (ak *WorkAccessToken) GetAccessToken() (accessToken string, err error) {
 	//加上lock，是为了防止在并发获取token时，cache刚好失效，导致从微信服务器上获取到不同token
 	ak.accessTokenLock.Lock()
 	defer ak.accessTokenLock.Unlock()
-	accessTokenCacheKey := fmt.Sprintf("%s_access_token_%s", ak.cacheKeyPrefix, ak.CorpID)
-	val := ak.cache.Get(accessTokenCacheKey)
+	val := ak.cache.Get(ak.cacheKeyPrefix)
 	if val != nil {
 		accessToken = val.(string)
 		return
@@ -128,7 +127,7 @@ func (ak *WorkAccessToken) GetAccessToken() (accessToken string, err error) {
 	}
 
 	expires := resAccessToken.ExpiresIn - 1500
-	err = ak.cache.Set(accessTokenCacheKey, resAccessToken.AccessToken, time.Duration(expires)*time.Second)
+	err = ak.cache.Set(ak.cacheKeyPrefix, resAccessToken.AccessToken, time.Duration(expires)*time.Second)
 	if err != nil {
 		return
 	}
@@ -136,7 +135,7 @@ func (ak *WorkAccessToken) GetAccessToken() (accessToken string, err error) {
 	return
 }
 
-//GetTokenFromServer 强制从微信服务器获取token
+// GetTokenFromServer 强制从微信服务器获取token
 func GetTokenFromServer(url string) (resAccessToken ResAccessToken, err error) {
 	var body []byte
 	body, err = util.HTTPGet(url)

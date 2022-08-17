@@ -3,7 +3,6 @@ package conversation
 import (
 	"fmt"
 	"github.com/EricJSanchez/wecom/WeWorkFinanceSDK"
-	"github.com/EricJSanchez/wecom/credential"
 	"github.com/spf13/cast"
 	"time"
 )
@@ -21,7 +20,7 @@ func (r *Client) GetMessageInstance() (client *WeWorkFinanceSDK.Client, err erro
 func (r *Client) SetMessageSeq(newSeq uint64) (seq uint64, err error) {
 	r.seqLock.Lock()
 	defer r.seqLock.Unlock()
-	seqCacheKey := fmt.Sprintf("%s:seq:%s", credential.CacheKeyWorkPrefix, r.corpID)
+	seqCacheKey := fmt.Sprintf("wx:seq:%s", r.corpID)
 
 	if val := r.cache.Get(seqCacheKey); val != nil {
 		seq = cast.ToUint64(val)
@@ -44,7 +43,7 @@ func (r *Client) SetMessageSeq(newSeq uint64) (seq uint64, err error) {
 func (r *Client) GetMessageSeq() (seq uint64, err error) {
 	r.seqLock.RLock()
 	defer r.seqLock.RUnlock()
-	seqCacheKey := fmt.Sprintf("%s:seq:%s", credential.CacheKeyWorkPrefix, r.corpID)
+	seqCacheKey := fmt.Sprintf("wx:seq:%s", r.corpID)
 	if val := r.cache.Get(seqCacheKey); val != nil {
 		seq = cast.ToUint64(val)
 	} else {

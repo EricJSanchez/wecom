@@ -1,11 +1,11 @@
 package conversation
 
 import (
-	"sync"
 	"github.com/EricJSanchez/wecom/cache"
 	"github.com/EricJSanchez/wecom/config"
 	"github.com/EricJSanchez/wecom/context"
 	"github.com/EricJSanchez/wecom/credential"
+	"sync"
 )
 
 // Client 会话内容归档实例
@@ -31,7 +31,7 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 	defaultAkHandle := credential.NewWorkAccessToken(
 		cfg.CorpID,
 		cfg.CorpSecret,
-		credential.CacheKeyWorkPrefix+"conversation_",
+		credential.CacheKeyWorkPrefix+"conversation:"+cfg.CorpID,
 		cfg.Cache)
 	ctx := &context.Context{
 		Config:            cfg,
