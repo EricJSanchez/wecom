@@ -17,11 +17,11 @@ const (
 	externalContactGroupChatTransfer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/transfer?access_token=%s"
 
 	//分配在职成员的客户
-	externalContactTransferCustomer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/transfer_customer?access_token=?access_token=%s"
+	externalContactTransferCustomer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/transfer_customer?access_token=%s"
 	//查询客户接替状态
 	externalContactTransferResult = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/transfer_result?access_token=%s"
 	//查询客户接替状态
-	externalContactGroupChatOnJobTransfer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/onjob_transfer??access_token=%s"
+	externalContactGroupChatOnJobTransfer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/onjob_transfer?access_token=%s"
 )
 
 //ExternalContactGetUnassignedListOptions
