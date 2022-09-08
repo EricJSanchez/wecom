@@ -152,6 +152,40 @@ func (r *Client) UserUpdate(options UserUpdateOptions) (info util.CommonError, e
 	return info, nil
 }
 
+// EnableUserOptions 禁用启用成员
+type EnableUserOptions struct {
+	Userid string `json:"userid"`           // 企业微信员工ID
+	Enable int    `json:"enable,omitempty"` // 启用/禁用成员。1表示启用成员，0表示禁用成员
+}
+
+// EnableUser 禁用启用员工
+func (r *Client) EnableUser(options EnableUserOptions) (info util.CommonError, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	fmt.Println(string(optionJson))
+	data, err = util.HTTPPost(fmt.Sprintf(userUpdateAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
 // UserDeleteOptions 删除成员请求参数
 type UserDeleteOptions struct {
 	Userid string `json:"userid"` // 企业微信员工ID
