@@ -159,7 +159,7 @@ type EnableUserOptions struct {
 }
 
 // EnableUser 禁用启用员工
-func (r *Client) EnableUser(options EnableUserOptions) (info util.CommonError, err error) {
+func (r *Client) EnableUser(optionJson string) (info util.CommonError, err error) {
 	var (
 		accessToken string
 		data        []byte
@@ -168,12 +168,7 @@ func (r *Client) EnableUser(options EnableUserOptions) (info util.CommonError, e
 	if err != nil {
 		return
 	}
-	optionJson, err := json.Marshal(options)
-	if err != nil {
-		return
-	}
-	fmt.Println(string(optionJson))
-	data, err = util.HTTPPost(fmt.Sprintf(userUpdateAddr, accessToken), string(optionJson))
+	data, err = util.HTTPPost(fmt.Sprintf(userUpdateAddr, accessToken), optionJson)
 	if err != nil {
 		return
 	}
