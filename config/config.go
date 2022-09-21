@@ -18,6 +18,7 @@ type Config struct {
 	EncodingAESKey string `json:"encoding_aes_key"` // 微信客服回调p配置，用于解密回调消息内容对应的密文
 	ContactSecret  string `json:"contact_secret"`   // 通讯录Secret
 	CustomerSecret string `json:"customer_secret"`  // 客户联系Secret
+	Cookie         string `json:"cookie"`           // 管理后台cookie
 }
 
 // AgentConfig 应用配置

@@ -11,6 +11,7 @@ import (
 	"github.com/EricJSanchez/wecom/material"
 	"github.com/EricJSanchez/wecom/message"
 	"github.com/EricJSanchez/wecom/oauth"
+	"github.com/EricJSanchez/wecom/platform"
 )
 
 type Wecom struct {
@@ -64,6 +65,11 @@ func (w *Wecom) GetMassage() (*message.Client, error) {
 // GetMaterial get material
 func (w *Wecom) GetMaterial() (*material.Client, error) {
 	return material.NewClient(w.ctx.Config)
+}
+
+// GetPlatform 管理后台的接口
+func (w *Wecom) GetPlatform() (*platform.Client, error) {
+	return platform.NewClient(w.ctx.Config)
 }
 
 //

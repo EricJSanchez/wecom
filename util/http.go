@@ -12,13 +12,15 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
+	"strings"
 
 	"golang.org/x/crypto/pkcs12"
 )
 
-//HTTPGet get 请求
+// HTTPGet get 请求
 func HTTPGet(uri string) ([]byte, error) {
 	response, err := http.Get(uri)
 	if err != nil {
@@ -29,10 +31,10 @@ func HTTPGet(uri string) ([]byte, error) {
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
-//HTTPPost post 请求
+// HTTPPost post 请求
 func HTTPPost(uri string, data string) ([]byte, error) {
 	body := bytes.NewBuffer([]byte(data))
 	response, err := http.Post(uri, "", body)
@@ -44,10 +46,10 @@ func HTTPPost(uri string, data string) ([]byte, error) {
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
-//PostJSON post json 数据请求
+// PostJSON post json 数据请求
 func PostJSON(uri string, obj interface{}) ([]byte, error) {
 	jsonBuf := new(bytes.Buffer)
 	enc := json.NewEncoder(jsonBuf)
@@ -65,7 +67,7 @@ func PostJSON(uri string, obj interface{}) ([]byte, error) {
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
 // PostJSONWithRespContentType post json数据请求，且返回数据类型
@@ -87,12 +89,12 @@ func PostJSONWithRespContentType(uri string, obj interface{}) ([]byte, string, e
 	if response.StatusCode != http.StatusOK {
 		return nil, "", fmt.Errorf("http get error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	responseData, err := ioutil.ReadAll(response.Body)
+	responseData, err := io.ReadAll(response.Body)
 	contentType := response.Header.Get("Content-Type")
 	return responseData, contentType, err
 }
 
-//PostFile 上传文件
+// PostFile 上传文件
 func PostFile(fieldname, filename, uri string) ([]byte, error) {
 	fields := []MultipartFormField{
 		{
@@ -104,7 +106,7 @@ func PostFile(fieldname, filename, uri string) ([]byte, error) {
 	return PostMultipartForm(fields, uri)
 }
 
-//MultipartFormField 保存文件或其他字段信息
+// MultipartFormField 保存文件或其他字段信息
 type MultipartFormField struct {
 	IsFile    bool
 	Fieldname string
@@ -112,7 +114,7 @@ type MultipartFormField struct {
 	Filename  string
 }
 
-//PostMultipartForm 上传文件或其他多个字段
+// PostMultipartForm 上传文件或其他多个字段
 func PostMultipartForm(fields []MultipartFormField, uri string) (respBody []byte, err error) {
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
@@ -161,11 +163,11 @@ func PostMultipartForm(fields []MultipartFormField, uri string) (respBody []byte
 	if resp.StatusCode != http.StatusOK {
 		return nil, err
 	}
-	respBody, err = ioutil.ReadAll(resp.Body)
+	respBody, err = io.ReadAll(resp.Body)
 	return
 }
 
-//PostXML perform a HTTP/POST request with XML body
+// PostXML perform a HTTP/POST request with XML body
 func PostXML(uri string, obj interface{}) ([]byte, error) {
 	xmlData, err := xml.Marshal(obj)
 	if err != nil {
@@ -182,10 +184,10 @@ func PostXML(uri string, obj interface{}) ([]byte, error) {
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http code error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
-//httpWithTLS CA证书
+// httpWithTLS CA证书
 func httpWithTLS(rootCa, key string) (*http.Client, error) {
 	var client *http.Client
 	certData, err := ioutil.ReadFile(rootCa)
@@ -204,7 +206,7 @@ func httpWithTLS(rootCa, key string) (*http.Client, error) {
 	return client, nil
 }
 
-//pkcs12ToPem 将Pkcs12转成Pem
+// pkcs12ToPem 将Pkcs12转成Pem
 func pkcs12ToPem(p12 []byte, password string) tls.Certificate {
 	blocks, err := pkcs12.ToPEM(p12, password)
 	defer func() {
@@ -226,7 +228,7 @@ func pkcs12ToPem(p12 []byte, password string) tls.Certificate {
 	return cert
 }
 
-//PostXMLWithTLS perform a HTTP/POST request with XML body and TLS
+// PostXMLWithTLS perform a HTTP/POST request with XML body and TLS
 func PostXMLWithTLS(uri string, obj interface{}, ca, key string) ([]byte, error) {
 	xmlData, err := xml.Marshal(obj)
 	if err != nil {
@@ -247,5 +249,55 @@ func PostXMLWithTLS(uri string, obj interface{}, ca, key string) ([]byte, error)
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http code error : uri=%v , statusCode=%v", uri, response.StatusCode)
 	}
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
+}
+
+func GetFormWithHeader(uri string, headers map[string]string) (rsp []byte, err error) {
+	//r := bytes.NewReader(body)
+	req, err := http.NewRequest(http.MethodGet, uri, nil)
+	if err != nil {
+		return
+	}
+	req.Close = true
+	for hk, hv := range headers {
+		// set 有就替换， add有就不做处理
+		req.Header.Set(hk, hv)
+	}
+	fmt.Println("uri:", uri)
+	fmt.Println("header:", headers)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+	rsp, err = io.ReadAll(resp.Body)
+	return
+}
+
+// PostFormEncodeWithHeader application/x-www-form-urlencoded请求
+func PostFormEncodeWithHeader(uri string, body, headers map[string]string) (rsp []byte, err error) {
+	DataUrlVal := url.Values{}
+	for k, v := range body {
+		DataUrlVal.Add(k, v)
+	}
+	r := strings.NewReader(DataUrlVal.Encode())
+	req, err := http.NewRequest(http.MethodPost, uri, r)
+	if err != nil {
+		return
+	}
+	req.Close = true
+	req.Header.Set("content-type", "application/x-www-form-urlencoded")
+	for hk, hv := range headers {
+		// set 有就替换， add有就不做处理
+		req.Header.Set(hk, hv)
+	}
+	//fmt.Println("uri:", uri)
+	//fmt.Println("header:", headers)
+	//fmt.Println("body:", body)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+	rsp, err = io.ReadAll(resp.Body)
+	//fmt.Println("ret:", string(rsp))
+	return
 }
