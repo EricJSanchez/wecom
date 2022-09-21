@@ -62,6 +62,8 @@ type VoiceMessageOptions struct {
 }
 type Voice struct {
 	MediaID string `json:"media_id"`
+	Name    string `json:"name"`
+	Size    int    `json:"size"`
 }
 
 // 视频消息
@@ -82,6 +84,8 @@ type FileMessageOptions struct {
 }
 type File struct {
 	MediaID string `json:"media_id"`
+	Name    string `json:"name"`
+	Size    int    `json:"size"`
 }
 
 // 文本卡片消息
