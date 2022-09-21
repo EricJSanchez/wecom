@@ -167,7 +167,7 @@ type DeptStaffData struct {
 }
 
 // GetDeptStaff 获取员工列表,page 0 代表第一页
-func (r *Client) GetDeptStaff(partyId string, page, size int64) (deptStaff DeptStaffDataRes, err error) {
+func (r *Client) GetDeptStaff(partyId string, page, size int) (deptStaff DeptStaffDataRes, err error) {
 	//var accessToken string
 	cookie := r.ctx.Config.Cookie
 	var header = commonPlatForm
