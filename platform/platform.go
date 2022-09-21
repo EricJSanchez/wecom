@@ -177,7 +177,7 @@ func (r *Client) GetDeptStaff(partyId string, page, size int64) (deptStaff DeptS
 		return
 	}
 	uri := fmt.Sprintf(deptStaffListUrl, time.Now().UnixMilli(), partyId, page, size)
-	rspOrigin, err := util.GetFormWithHeader(uri, header)
+	rspOrigin, err := util.GetWithHeader(uri, header)
 	err = json.Unmarshal(rspOrigin, &deptStaff)
 	if deptStaff.Data.PageCount == 0 {
 		err = errors.New("请求出错:" + string(rspOrigin))

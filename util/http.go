@@ -252,7 +252,7 @@ func PostXMLWithTLS(uri string, obj interface{}, ca, key string) ([]byte, error)
 	return io.ReadAll(response.Body)
 }
 
-func GetFormWithHeader(uri string, headers map[string]string) (rsp []byte, err error) {
+func GetWithHeader(uri string, headers map[string]string) (rsp []byte, err error) {
 	//r := bytes.NewReader(body)
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
 	if err != nil {
@@ -263,8 +263,8 @@ func GetFormWithHeader(uri string, headers map[string]string) (rsp []byte, err e
 		// set 有就替换， add有就不做处理
 		req.Header.Set(hk, hv)
 	}
-	fmt.Println("uri:", uri)
-	fmt.Println("header:", headers)
+	//fmt.Println("uri:", uri)
+	//fmt.Println("header:", headers)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return
