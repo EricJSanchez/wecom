@@ -223,7 +223,7 @@ type SearchStaffData struct {
 	Alias            string        `json:"alias,omitempty"`
 	ActiveBiz        bool          `json:"active_biz"`
 	WxqyUserid       string        `json:"wxqy_userid,omitempty"`
-	Gid              string        `json:"gid"`
+	Gid              interface{}   `json:"gid"`
 	Pinyin           string        `json:"pinyin,omitempty"`
 	MainpartyID      string        `json:"mainparty_id"`
 	OldUin           int           `json:"old_uin,omitempty"`
