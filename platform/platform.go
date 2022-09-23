@@ -159,11 +159,12 @@ type ContactList struct {
 	List []ContactListChild `json:"list"`
 }
 type DeptStaffData struct {
-	ContactList ContactList `json:"contact_list"`
-	MemberCount int         `json:"member_count"`
-	DisableCnt  int         `json:"disable_cnt"`
-	PageCount   int         `json:"page_count"`
-	Status      string      `json:"status"`
+	ContactList         ContactList `json:"contact_list"`
+	NextPageContactList ContactList `json:"next_page_contact_list"`
+	MemberCount         int         `json:"member_count"`
+	DisableCnt          int         `json:"disable_cnt"`
+	PageCount           int         `json:"page_count"`
+	Status              string      `json:"status"`
 }
 
 // GetDeptStaff 获取员工列表,page 0 代表第一页
