@@ -11,7 +11,7 @@ import (
 // Client 会话内容归档实例
 type Client struct {
 	corpID         string // 企业ID
-	secret         string // Secret是用于校验开发者身份的访问密钥
+	secret         string // 聊天内容存档的Secret，可以在企业微信管理端--管理工具--聊天内容存档查看
 	rasVersion     int    // 企业获取的会话内容将用此公钥加密，企业可用自行保存的私钥解开会话内容数据
 	rasPrivateKey  string // 消息加密私钥，可以在企业微信管理端--管理工具--消息加密公钥查看对用公钥，私钥一般由自己保存
 	token          string // 用于生成签名校验回调请求的合法性
@@ -40,7 +40,7 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 
 	client = &Client{
 		corpID:         cfg.CorpID,
-		secret:         cfg.CustomerSecret,
+		secret:         cfg.CorpSecret,
 		rasVersion:     cfg.RasVersion,
 		rasPrivateKey:  cfg.RasPrivateKey,
 		token:          cfg.Token,
