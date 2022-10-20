@@ -3,8 +3,8 @@ package externalcontact
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/spf13/cast"
 	"github.com/EricJSanchez/wecom/util"
+	"github.com/spf13/cast"
 )
 
 const (
@@ -49,9 +49,16 @@ type ExternalcontactGetTagListSchema struct {
 	TagGroup []TagGroupChild `json:"tag_group"` // 标签组列表
 }
 
+// ExternalcontactAddTagWithGroupListOptions  添加企业标签
+type ExternalcontactAddTagWithGroupListOptions struct {
+	GroupID   string                             `json:"group_id"`   // 要查询的标签组id，返回该标签组以及其下的所有标签信息
+	GroupName string                             `json:"group_name"` // 标签组名称
+	Order     int                                `json:"order"`      // 标签组排序的次序值，order值大的排序靠前。有效的值范围是[0, 2^32)
+	Tag       []ExternalcontactAddTagListOptions `json:"tag"`
+}
+
 // ExternalcontactAddTagListOptions  添加企业标签
 type ExternalcontactAddTagAndGroupListOptions struct {
-	GroupID   string                             `json:"group_id"`   // 要查询的标签组id，返回该标签组以及其下的所有标签信息
 	GroupName string                             `json:"group_name"` // 标签组名称
 	Order     int                                `json:"order"`      // 标签组排序的次序值，order值大的排序靠前。有效的值范围是[0, 2^32)
 	Tag       []ExternalcontactAddTagListOptions `json:"tag"`
@@ -122,8 +129,32 @@ func (r *Client) GetTagList(options ExternalcontactGetTagListOptions) (info Exte
 	return info, nil
 }
 
-// AddTagListOrGroup 添加企业客户标签
-func (r *Client) AddTagListOrGroup(options ExternalcontactAddTagAndGroupListOptions) (info ExternalcontactAddTagAndGroupListSchema, err error) {
+// AddTagList 添加企业客户标签
+func (r *Client) AddTagList(options ExternalcontactAddTagWithGroupListOptions) (info ExternalcontactAddTagAndGroupListSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	data, err = util.PostJSON(fmt.Sprintf(externalContactAddTagListAddr, accessToken), options)
+	if err != nil {
+		return
+	}
+	fmt.Println(cast.ToString(data))
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+// AddTagListAndGroup 添加企业客户标签和标签组
+func (r *Client) AddTagListAndGroup(options ExternalcontactAddTagAndGroupListOptions) (info ExternalcontactAddTagAndGroupListSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
