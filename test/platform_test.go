@@ -92,3 +92,18 @@ func TestSaveIpWhiteList(t *testing.T) {
 	}
 	Pr(appList)
 }
+
+// 获取应用管理员列表
+func TestGetAppAdminInfo(t *testing.T) {
+	weCom, err := Wework("305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	adminList, err := weCom.GetAppAdminInfo("305")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(adminList)
+}
