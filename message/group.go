@@ -250,7 +250,7 @@ func (r *Client) SendGroupMessage(options interface{}) (info util.CommonError, e
 	if err != nil {
 		return
 	}
-	data, err = util.PostJSON(fmt.Sprintf(createGroupAddr, accessToken), options)
+	data, err = util.PostJSON(fmt.Sprintf(sendGroupMessageAddr, accessToken), options)
 	if err != nil {
 		return
 	}
