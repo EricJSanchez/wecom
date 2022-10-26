@@ -130,6 +130,34 @@ func (r *Client) SettingApiCallback(appId, callbackUrl, token, eAesKey string) (
 	return
 }
 
+// UpCloseApp 开启或关闭应用状态
+func (r *Client) UpCloseApp(appId string, upClose string) (setRes SaveOpenApiAppRes, err error) {
+	//var accessToken string
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	postData := map[string]string{
+		"app_open": upClose,
+		"app_id":   appId,
+		"_d2st":    "",
+	}
+	rspOrigin, err := util.PostFormEncodeWithHeader(fmt.Sprintf(saveOpenApiAppUrl, time.Now().UnixMilli()), postData, header)
+	Pr(postData, string(rspOrigin))
+	if strings.Contains(string(rspOrigin), "errCode") {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	err = json.Unmarshal(rspOrigin, &setRes)
+	if err != nil {
+		return
+	}
+	return
+}
+
 type SaveIpWhiteListRes struct {
 	Data SaveIpWhiteListResData `json:"data"`
 }
