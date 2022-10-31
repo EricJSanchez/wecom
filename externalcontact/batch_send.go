@@ -9,6 +9,7 @@ import (
 const (
 	//获取客户群详情
 	addMsgTemplateAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_msg_template?access_token=%s"
+	msgSendResultAddr  = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_groupmsg_send_result?access_token=%s"
 )
 
 type AddMsgTemplateOptions struct {
@@ -72,6 +73,52 @@ func (r *Client) AddMsgTemplate(options AddMsgTemplateOptions) (info AddMsgTempl
 		return
 	}
 	data, err = util.HTTPPost(fmt.Sprintf(addMsgTemplateAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type MsgSendResultOptions struct {
+	Msgid  string `json:"msgid"`
+	Userid string `json:"userid"`
+	Limit  int    `json:"limit"`
+	Cursor string `json:"cursor"`
+}
+
+type MsgSendResultSchema struct {
+	util.CommonError
+	NextCursor string     `json:"next_cursor"`
+	SendList   []SendList `json:"send_list"`
+}
+type SendList struct {
+	ExternalUserid string `json:"external_userid"`
+	ChatID         string `json:"chat_id"`
+	Userid         string `json:"userid"`
+	Status         int    `json:"status"`
+	SendTime       int    `json:"send_time"`
+}
+
+func (r *Client) MsgSendResult(options MsgSendResultOptions) (info MsgSendResultSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(msgSendResultAddr, accessToken), string(optionJson))
 	if err != nil {
 		return
 	}
