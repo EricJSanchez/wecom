@@ -15,9 +15,9 @@ const (
 type AddMsgTemplateOptions struct {
 	ChatType       string        `json:"chat_type"`
 	ExternalUserid []string      `json:"external_userid"`
-	Sender         string        `json:"sender"`
+	Sender         string        `json:"sender,omitempty"`
 	Text           Text          `json:"text,omitempty"`
-	Attachments    []Attachments `json:"attachments"`
+	Attachments    []Attachments `json:"attachments,omitempty"`
 }
 type BsText struct {
 	Content string `json:"content"`
