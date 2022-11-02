@@ -17,32 +17,32 @@ type AddMsgTemplateOptions struct {
 	ExternalUserid []string      `json:"external_userid"`
 	Sender         string        `json:"sender,omitempty"`
 	Text           BsText        `json:"text,omitempty"`
-	Attachments    []Attachments `json:"attachments,omitempty"`
+	Attachments    []interface{} `json:"attachments,omitempty"`
 }
 type BsText struct {
-	Content string `json:"content"`
+	Content string `json:"content,omitempty"`
 }
 type BsImage struct {
 	MediaID string `json:"media_id,omitempty"`
 	PicURL  string `json:"pic_url,omitempty"`
 }
 type BsLink struct {
-	Title  string `json:"title"`
-	Picurl string `json:"picurl"`
-	Desc   string `json:"desc"`
-	URL    string `json:"url"`
+	Title  string `json:"title,omitempty"`
+	Picurl string `json:"picurl,omitempty"`
+	Desc   string `json:"desc,omitempty"`
+	URL    string `json:"url,omitempty"`
 }
 type BsMiniprogram struct {
-	Title      string `json:"title"`
-	PicMediaID string `json:"pic_media_id"`
-	Appid      string `json:"appid"`
-	Page       string `json:"page"`
+	Title      string `json:"title,omitempty"`
+	PicMediaID string `json:"pic_media_id,omitempty"`
+	Appid      string `json:"appid,omitempty"`
+	Page       string `json:"page,omitempty"`
 }
 type BsVideo struct {
-	MediaID string `json:"media_id"`
+	MediaID string `json:"media_id,omitempty"`
 }
 type BsFile struct {
-	MediaID string `json:"media_id"`
+	MediaID string `json:"media_id,omitempty"`
 }
 type Attachments struct {
 	Msgtype     string        `json:"msgtype"`
