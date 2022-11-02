@@ -16,15 +16,15 @@ type AddMsgTemplateOptions struct {
 	ChatType       string        `json:"chat_type"`
 	ExternalUserid []string      `json:"external_userid"`
 	Sender         string        `json:"sender,omitempty"`
-	Text           Text          `json:"text,omitempty"`
+	Text           BsText        `json:"text,omitempty"`
 	Attachments    []Attachments `json:"attachments,omitempty"`
 }
 type BsText struct {
 	Content string `json:"content"`
 }
 type BsImage struct {
-	MediaID string `json:"media_id"`
-	PicURL  string `json:"pic_url"`
+	MediaID string `json:"media_id,omitempty"`
+	PicURL  string `json:"pic_url,omitempty"`
 }
 type BsLink struct {
 	Title  string `json:"title"`
