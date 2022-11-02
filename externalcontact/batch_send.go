@@ -16,41 +16,41 @@ type AddMsgTemplateOptions struct {
 	ChatType       string        `json:"chat_type"`
 	ExternalUserid []string      `json:"external_userid"`
 	Sender         string        `json:"sender,omitempty"`
-	Text           BsText        `json:"text,omitempty"`
+	Text           *BsText       `json:"text,omitempty"`
 	Attachments    []interface{} `json:"attachments,omitempty"`
 }
 type BsText struct {
-	Content string `json:"content,omitempty"`
+	Content string `json:"content"`
 }
 type BsImage struct {
 	MediaID string `json:"media_id,omitempty"`
-	PicURL  string `json:"pic_url,omitempty"`
+	PicURL  string `json:"pic_url"`
 }
 type BsLink struct {
-	Title  string `json:"title,omitempty"`
-	Picurl string `json:"picurl,omitempty"`
-	Desc   string `json:"desc,omitempty"`
-	URL    string `json:"url,omitempty"`
+	Title  string `json:"title"`
+	Picurl string `json:"picurl"`
+	Desc   string `json:"desc"`
+	URL    string `json:"url"`
 }
 type BsMiniprogram struct {
-	Title      string `json:"title,omitempty"`
-	PicMediaID string `json:"pic_media_id,omitempty"`
-	Appid      string `json:"appid,omitempty"`
-	Page       string `json:"page,omitempty"`
+	Title      string `json:"title"`
+	PicMediaID string `json:"pic_media_id"`
+	Appid      string `json:"appid"`
+	Page       string `json:"page"`
 }
 type BsVideo struct {
-	MediaID string `json:"media_id,omitempty"`
+	MediaID string `json:"media_id"`
 }
 type BsFile struct {
-	MediaID string `json:"media_id,omitempty"`
+	MediaID string `json:"media_id"`
 }
 type Attachments struct {
-	Msgtype     string        `json:"msgtype"`
-	Image       BsImage       `json:"image,omitempty"`
-	Link        BsLink        `json:"link,omitempty"`
-	Miniprogram BsMiniprogram `json:"miniprogram,omitempty"`
-	Video       BsVideo       `json:"video,omitempty"`
-	File        BsFile        `json:"file,omitempty"`
+	Msgtype     string         `json:"msgtype"`
+	Image       *BsImage       `json:"image,omitempty"`
+	Link        *BsLink        `json:"link,omitempty"`
+	Miniprogram *BsMiniprogram `json:"miniprogram,omitempty"`
+	Video       *BsVideo       `json:"video,omitempty"`
+	File        *BsFile        `json:"file,omitempty"`
 }
 
 type AddMsgTemplateSchema struct {
