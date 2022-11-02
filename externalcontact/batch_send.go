@@ -17,7 +17,7 @@ type AddMsgTemplateOptions struct {
 	ExternalUserid []string      `json:"external_userid"`
 	Sender         string        `json:"sender,omitempty"`
 	Text           *BsText       `json:"text,omitempty"`
-	Attachments    []interface{} `json:"attachments,omitempty"`
+	Attachments    []Attachments `json:"attachments,omitempty"`
 }
 type BsText struct {
 	Content string `json:"content"`
