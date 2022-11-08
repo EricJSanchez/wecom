@@ -58,13 +58,13 @@ func (r *Client) AddInterceptRule(options AddInterceptRuleOptions) (info Interce
 }
 
 type UpdateInterceptRuleOptions struct {
-	RuleID                string                `json:"rule_id"`
-	RuleName              string                `json:"rule_name"`
-	WordList              []string              `json:"word_list"`
-	ExtraRule             ExtraRule             `json:"extra_rule"`
-	InterceptType         int                   `json:"intercept_type"`
-	AddApplicableRange    AddApplicableRange    `json:"add_applicable_range"`
-	RemoveApplicableRange RemoveApplicableRange `json:"remove_applicable_range"`
+	RuleID                string                 `json:"rule_id"`
+	RuleName              string                 `json:"rule_name"`
+	WordList              []string               `json:"word_list"`
+	ExtraRule             ExtraRule              `json:"extra_rule"`
+	InterceptType         int                    `json:"intercept_type"`
+	AddApplicableRange    AddApplicableRange     `json:"add_applicable_range"`
+	RemoveApplicableRange *RemoveApplicableRange `json:"remove_applicable_range"`
 }
 type ExtraRule struct {
 	SemanticsList []int `json:"semantics_list"`
@@ -74,8 +74,8 @@ type AddApplicableRange struct {
 	DepartmentList []int    `json:"department_list"`
 }
 type RemoveApplicableRange struct {
-	UserList       []string `json:"user_list"`
-	DepartmentList []int    `json:"department_list"`
+	UserList       []*string `json:"user_list"`
+	DepartmentList []*int    `json:"department_list"`
 }
 
 func (r *Client) UpdateInterceptRule(options UpdateInterceptRuleOptions) (info util.CommonError, err error) {
