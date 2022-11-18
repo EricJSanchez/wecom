@@ -135,11 +135,11 @@ type DeletePartyCallbackMessage struct {
 // UpdateTagCallbackMessage 标签变更通知回调消息
 type UpdateTagCallbackMessage struct {
 	CallbackMessage
-	TagId         int      `json:"tag_id"`          // 标签Id
-	AddUserItems  []string `json:"add_user_items"`  // 标签中新增的成员userid列表，用逗号分隔
-	DelUserItems  []string `json:"del_user_items"`  // 标签中删除的成员userid列表，用逗号分隔
-	AddPartyItems []int    `json:"add_party_items"` // 标签中新增的部门id列表，用逗号分隔
-	DelPartyItems []int    `json:"del_party_items"` // 标签中删除的部门id列表，用逗号分隔
+	TagId         int    `json:"tag_id"`          // 标签Id
+	AddUserItems  string `json:"add_user_items"`  // 标签中新增的成员userid列表，用逗号分隔
+	DelUserItems  string `json:"del_user_items"`  // 标签中删除的成员userid列表，用逗号分隔
+	AddPartyItems string `json:"add_party_items"` // 标签中新增的部门id列表，用逗号分隔 用[] int 会报错
+	DelPartyItems string `json:"del_party_items"` // 标签中删除的部门id列表，用逗号分隔
 }
 
 // BatchJob 异步任务信息
