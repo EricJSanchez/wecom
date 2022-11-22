@@ -80,6 +80,7 @@ type CallbackMessageLog struct {
 type CreateUserCallbackMessage struct {
 	CallbackMessage
 	UserID         string                 `json:"user_id"`           // 成员UserID
+	NewUserID      string                 `json:"new_user_id"`       // 新的成员id
 	Name           string                 `json:"name"`              // 成员名称
 	Department     string                 `json:"department"`        // 成员部门列表，仅返回该应用有查看权限的部门id
 	MainDepartment int                    `json:"main_department"`   // 主部门
