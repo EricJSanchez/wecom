@@ -16,25 +16,10 @@ type SignatureOptions struct {
 }
 
 // VerifyURL 验证请求参数是否合法并返回解密后的消息内容
-//  //Gin框架的使用示例
-//	r.GET("/v1/event/callback", func(c *gin.Context) {
-//		options := kf.SignatureOptions{}
-//		//获取回调的的校验参数
-//		if = c.ShouldBindQuery(&options); err != nil {
-//			c.String(http.StatusUnauthorized, "参数解析失败")
-//		}
-//		// 调用VerifyURL方法校验当前请求，如果合法则把解密后的内容作为响应返回给微信服务器
-//		echo, err := kfClient.VerifyURL(options)
-//		if err == nil {
-//			c.String(http.StatusOK, echo)
-//		} else {
-//			c.String(http.StatusUnauthorized, "非法请求来源")
-//		}
-//	})
 func (r *Client) VerifyURL(options SignatureOptions) (string, error) {
-	fmt.Println("r", r)
-	fmt.Println("r.ctx.Token", r.ctx.Token)
-	fmt.Println("r.ctx", r.ctx.Token, options.TimeStamp, options.Nonce, options.EchoStr, options.Encrypt)
+	//fmt.Println("r", r)
+	//fmt.Println("r.ctx.Token", r.ctx.Token)
+	//fmt.Println("r.ctx", r.ctx.Token, options.TimeStamp, options.Nonce, options.EchoStr, options.Encrypt)
 	if options.Signature != util.Signature(r.ctx.Token, options.TimeStamp, options.Nonce, options.EchoStr, options.Encrypt) {
 		return "", NewSDKErr(40015)
 	}
@@ -174,27 +159,6 @@ type TagShuffleCallbackMessage struct {
 }
 
 // GetCallbackMessage 获取回调事件中的消息内容
-//  //Gin框架的使用示例
-//	r.POST("/v1/event/callback", func(c *gin.Context) {
-//		var (
-//			message kf.CallbackMessage
-//			body []byte
-//		)
-//		// 读取原始消息内容
-//		body, err = c.GetRawData()
-//		if err != nil {
-//			c.String(http.StatusInternalServerError, err.Error())
-//			return
-//		}
-//		// 解析原始数据
-//		message, err = kfClient.GetCallbackMessage(body)
-//		if err != nil {
-//			c.String(http.StatusInternalServerError, "消息获取失败")
-//			return
-//		}
-//		fmt.Println(message)
-//		c.String(200, "ok")
-//	})
 func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encryptedMsg []byte) (rawData []byte, msg CallbackMessage, err error) {
 	var origin callbackOriginMessage
 	if err = xml.Unmarshal(encryptedMsg, &origin); err != nil {
@@ -202,9 +166,9 @@ func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encrypted
 		return rawData, msg, err
 	}
 	signatureOptions.Encrypt = origin.Encrypt
-	fmt.Println("GetCallbackMessage----------", r)
-	fmt.Println("GetCallbackMessage ctx----------", r.ctx)
-	fmt.Println("GetCallbackMessage ctx t----------", r.ctx.Token)
+	//fmt.Println("GetCallbackMessage----------", r)
+	//fmt.Println("GetCallbackMessage ctx----------", r.ctx)
+	//fmt.Println("GetCallbackMessage ctx t----------", r.ctx.Token)
 	_, err = r.VerifyURL(signatureOptions)
 	if err != nil {
 		fmt.Println("GetCallbackMessage VerifyURL:", err)
