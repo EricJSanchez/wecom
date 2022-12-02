@@ -48,6 +48,7 @@ func (r *Client) CreateMenu(options CreateMenuOptions) (info CreateMenuSchema, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, createMenuAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -81,6 +82,7 @@ func (r *Client) GetMenu() (info GetMenuSchema, err error) {
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getMenuAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -113,6 +115,7 @@ func (r *Client) DeleteMenu() (info DeleteMenuSchema, err error) {
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, deleteMenuAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

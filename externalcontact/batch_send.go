@@ -64,6 +64,7 @@ func (r *Client) AddMsgTemplate(options AddMsgTemplateOptions) (info AddMsgTempl
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, addMsgTemplateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -110,6 +111,7 @@ func (r *Client) MsgSendResult(options MsgSendResultOptions) (info MsgSendResult
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, msgSendResultAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

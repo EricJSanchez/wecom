@@ -36,6 +36,7 @@ func (r *Client) AddInterceptRule(options AddInterceptRuleOptions) (info Interce
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, addInterceptRuleAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -83,6 +84,7 @@ func (r *Client) UpdateInterceptRule(options UpdateInterceptRuleOptions) (info u
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, updateInterceptRuleAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -113,6 +115,7 @@ func (r *Client) DelInterceptRule(options DelInterceptRuleOptions) (info util.Co
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, delInterceptRuleAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

@@ -48,6 +48,7 @@ func (r *Client) ExternalcontactList(options ExternalcontactListOptions) (info E
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -121,6 +122,7 @@ func (r *Client) ExternalcontactGet(options ExternalcontactGetOptions) (info Ext
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGetAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -177,6 +179,7 @@ func (r *Client) ExternalcontactBatchGetByUser(options ExternalcontactBatchGetBy
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactBatchGetByUserAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -211,6 +214,7 @@ func (r *Client) ExternalcontactRemark(options ExternalcontactRemarkOptions) (in
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactRemarkAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -235,12 +239,13 @@ type ExternalcontactGetFollowUserListSchema struct {
 	FollowUser []string `json:"follow_user"`
 }
 
-//externalcontactGetFollowUserListAddr 获取配置了客户联系功能的成员列表
+// externalcontactGetFollowUserListAddr 获取配置了客户联系功能的成员列表
 func (r *Client) ExternalcontactGetFollowUserList() (info ExternalcontactGetFollowUserListSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGetFollowUserListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -284,6 +289,7 @@ func (r *Client) ExternalcontactCustomerStrategyList(options ExternalcontactCust
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -353,6 +359,7 @@ func (r *Client) ExternalcontactCustomerStrategyGet(options ExternalcontactCusto
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyGetAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -399,6 +406,7 @@ func (r *Client) ExternalcontactCustomerStrategyGetRange(options Externalcontact
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyGetRangeAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -437,6 +445,7 @@ func (r *Client) ExternalcontactCustomerStrategyCreate(options ExternalcontactCu
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyCreateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -470,6 +479,7 @@ func (r *Client) ExternalcontactCustomerStrategyEdit(options ExternalcontactCust
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyEditAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -498,6 +508,7 @@ func (r *Client) ExternalcontactCustomerStrategyDel(options ExternalcontactCusto
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactCustomerStrategyDelAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

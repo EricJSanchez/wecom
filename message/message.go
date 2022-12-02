@@ -360,6 +360,7 @@ func (r *Client) SendMessage(options interface{}) (info BaseMessageSchema, err e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, sendMessageAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -528,6 +529,7 @@ func (r *Client) UpdateTemplateCard(options interface{}) (info BaseTemplateCardU
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, updateTemplateCardAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -555,6 +557,7 @@ func (r *Client) RecallMessage(options interface{}) (info util.CommonError, err 
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, recallMessageAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

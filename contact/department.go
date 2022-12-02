@@ -38,6 +38,7 @@ func (r *Client) DepartmentCreate(options DepartmentCreateOptions) (info Departm
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, departmentCreateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -71,6 +72,7 @@ func (r *Client) DepartmentUpdate(options DepartmentUpdateOptions) (info util.Co
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, departmentUpdateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -99,6 +101,7 @@ func (r *Client) DepartmentDelete(options DepartmentDeleteOptions) (info util.Co
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, departmentDeleteAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -142,6 +145,7 @@ func (r *Client) DepartmentList(options DepartmentListOptions) (info DepartmentL
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, departmentListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

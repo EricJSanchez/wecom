@@ -13,13 +13,13 @@ const (
 	externalcontactGroupChatListAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/list?access_token=%s"
 )
 
-//获取客户群详情参数
+// 获取客户群详情参数
 type ExternalcontactGroupChatInfoOptions struct {
 	ChatId   string `json:"chat_id"`   // 	 	客户群ID
 	NeedName int    `json:"need_name"` // 	是否需要返回群成员的名字group_chat.member_list.name。0-不返回；1-返回。默认不返回
 }
 
-//客户群详情
+// 客户群详情
 type ExternalcontactGroupChatInfo struct {
 	ChatId     string                           `json:"chat_id"`     //客户群ID
 	Name       string                           `json:"name"`        //群名
@@ -30,7 +30,7 @@ type ExternalcontactGroupChatInfo struct {
 	AdminList  []ExternalcontactGroupChatAdmin  `json:"admin_list"`  //群管理员列表
 }
 
-//群成员列表
+// 群成员列表
 type ExternalcontactGroupChatMember struct {
 	Userid        string                          `json:"userid"`         // 群成员id
 	Type          int                             `json:"type"`           //成员类型1 - 企业成员 2 - 外部联系人
@@ -43,19 +43,19 @@ type ExternalcontactGroupChatMember struct {
 
 }
 
-//邀请人
+// 邀请人
 type ExternalcontactGroupChatInvitor struct {
 	Userid string `json:"userid"` //邀请者的userid
 
 }
 
-//群管理员列表
+// 群管理员列表
 type ExternalcontactGroupChatAdmin struct {
 	Userid string `json:"userid"` //群管理员userid
 
 }
 
-//群列表返回参数
+// 群列表返回参数
 type ExternalcontactGroupChatList struct {
 	StatusFilter int                     `json:"status_filter"` //客户群跟进状态过滤。0 - 所有列表(即不过滤) 1 - 离职待继承 2 - 离职继承中 3 - 离职继承完成 默认为0
 	OwnerFilter  []GroupChatOwnerFilters `json:"owner_filter"`  //群主过滤。 如果不填，表示获取应用可见范围内全部群主的数据（但是不建议这么用，如果可见范围人数超过1000人，为了防止数据包过大，会报错 81017）
@@ -63,24 +63,25 @@ type ExternalcontactGroupChatList struct {
 	Limit        int                     `json:"limit"`         //分页，预期请求的数据量，取值范围 1 ~ 1000
 }
 
-//群主过滤
+// 群主过滤
 type GroupChatOwnerFilters struct {
 	UseridList string `json:"userid_list"` //用户ID列表。最多100个
 
 }
 
-//获取群详情返回结果
+// 获取群详情返回结果
 type GetExternalcontactGroupChatInfoSchema struct {
 	util.CommonError
 	ExternalcontactGroupChatInfo ExternalcontactGroupChatInfo `json:"group_chat"`
 }
 
-//获取群详情
+// 获取群详情
 func (r *Client) GetExternalContactGroupChatInfo(options ExternalcontactGroupChatInfoOptions) (info GetExternalcontactGroupChatInfoSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGroupChatInfoAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -106,13 +107,13 @@ func (r *Client) GetExternalContactGroupChatInfo(options ExternalcontactGroupCha
 	return info, nil
 }
 
-//获取群列表返回结果
+// 获取群列表返回结果
 type GetExternalcontactGroupChatListSchema struct {
 	util.CommonError
 	ExternalcontactGroupChatList ExternalcontactGroupChatList `json:"externalcontact_group_chat_list"`
 }
 
-//获取群列表
+// 获取群列表
 func (r *Client) GetExternalcontactGroupChatList() (list GetExternalcontactGroupChatListSchema, err error) {
 	accessToken, err := r.ctx.GetAccessToken()
 	if err != nil {

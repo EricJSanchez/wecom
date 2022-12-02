@@ -57,6 +57,7 @@ func (r *Client) GetApplicationInfo() (info GetApplicationInfoSchema, err error)
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getApplicationInfoAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -96,6 +97,7 @@ func (r *Client) GetApplicationList() (info GetApplicationListSchema, err error)
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getApplicationListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -136,6 +138,7 @@ func (r *Client) SetApplicationInfo(options SetApplicationInfoOptions) (info Set
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, setApplicationInfoAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

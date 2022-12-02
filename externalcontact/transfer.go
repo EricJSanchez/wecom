@@ -24,7 +24,7 @@ const (
 	externalContactGroupChatOnJobTransfer = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/onjob_transfer?access_token=%s"
 )
 
-//ExternalContactGetUnassignedListOptions
+// ExternalContactGetUnassignedListOptions
 type ExternalContactGetUnassignedListOptions struct {
 	PageId   int    `json:"page_id"`   // 	分页查询，要查询页号，从0开始
 	PageSize int    `json:"page_size"` //	每次返回的最大记录数，默认为1000，最大值为1000
@@ -49,12 +49,13 @@ page_id和page_size参数仅适用于记录数小于五万条的情况,即 page_
 如果记录数大于五万，则需要使用cursor参数。
 */
 
-//GetUnassignedList 获取待分配的离职成员列表
+// GetUnassignedList 获取待分配的离职成员列表
 func (r *Client) GetUnassignedList(options ExternalContactGetUnassignedListOptions) (info ExternalContactGetUnassignedListSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactGetUnassignedList)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -94,6 +95,7 @@ func (r *Client) ResignedTransferCustomer(options ExternalContactResignedTransfe
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactResignedTransferCustomer)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -129,12 +131,13 @@ type ExternalContactResignedTransferResultInfo struct {
 	TakeoverTime   int    `json:"takeover_time"`   //	接替客户的时间，如果是等待接替状态，则为未来的自动接替时间
 }
 
-//ResignedTransferResult 查询客户接替状态
+// ResignedTransferResult 查询客户接替状态
 func (r *Client) ResignedTransferResult(options ExternalContactResignedTransferResultOptions) (info ExternalContactResignedTransferResultSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactResignedTransferResult)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -175,12 +178,13 @@ type ExternalContactFailedChatList struct {
 同一个人的群，限制每天最多分配300个给新群主
 */
 
-//GroupChatTransfer 分配离职成员的客户群
+// GroupChatTransfer 分配离职成员的客户群
 func (r *Client) GroupChatTransfer(options ExternalContactGroupChatTransferOptions) (info ExternalContactGroupChatTransferSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactGroupChatTransfer)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -207,12 +211,13 @@ type ExternalContactTransferCustomerOptions struct {
 
 //为保障客户服务体验，90个自然日内，在职成员的每位客户仅可被转接2次。
 
-//TransferCustomer 分配在职成员的客户
+// TransferCustomer 分配在职成员的客户
 func (r *Client) TransferCustomer(options ExternalContactTransferCustomerOptions) (info ExternalContactTransferCustomerSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactTransferCustomer)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -230,12 +235,13 @@ func (r *Client) TransferCustomer(options ExternalContactTransferCustomerOptions
 	return info, nil
 }
 
-//TransferResult 查询客户接替状态 ---在职状态
+// TransferResult 查询客户接替状态 ---在职状态
 func (r *Client) TransferResult(options ExternalContactResignedTransferResultOptions) (info ExternalContactResignedTransferResultSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactTransferResult)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -253,12 +259,13 @@ func (r *Client) TransferResult(options ExternalContactResignedTransferResultOpt
 	return info, nil
 }
 
-//GroupChatOnJobTransfer 分配在职成员的客户群
+// GroupChatOnJobTransfer 分配在职成员的客户群
 func (r *Client) GroupChatOnJobTransfer(options ExternalContactGroupChatTransferOptions) (info ExternalContactGroupChatTransferSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactGroupChatOnJobTransfer)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

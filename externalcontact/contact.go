@@ -34,7 +34,7 @@ type ListContactWayGetSchema struct {
 	NextCursor string       `json:"next_cursor"`
 }
 
-//ContactWay  信息
+// ContactWay  信息
 type ContactWay struct {
 	ConfigId string `json:"config_id"`
 }
@@ -45,6 +45,7 @@ func (r *Client) ListContactWayGet(options ListContactWayGetOptions) (info ListC
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactListContactWay)
 	accessToken, err = r.ctx.GetAccessToken()
 	//fmt.Println(accessToken)
 	if err != nil {
@@ -123,6 +124,7 @@ func (r *Client) GetContactInfo(options ContactWay) (info GetContactInfoSchema, 
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGetContactWay)
 	accessToken, err = r.ctx.GetAccessToken()
 	//fmt.Println(accessToken)
 	if err != nil {
@@ -147,12 +149,13 @@ type ContactWaySchema struct {
 	util.CommonError
 }
 
-//删除 【联系我】 方式
+// 删除 【联系我】 方式
 func (r *Client) DelContactWay(options ContactWay) (info ContactWaySchema, err error) {
 	var (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactDelContactWay)
 	accessToken, err = r.ctx.GetAccessToken()
 	//fmt.Println(accessToken)
 	if err != nil {
@@ -200,6 +203,7 @@ func (r *Client) AddContactWay(options AddContactWayOptions) (info AddContactWay
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactAddContactWay)
 	accessToken, err = r.ctx.GetAccessToken()
 	//fmt.Println(accessToken)
 	if err != nil {
@@ -239,6 +243,7 @@ func (r *Client) UpdateContactWay(options UpdateContactWayOptions) (info Contact
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactUpdateContactWay)
 	accessToken, err = r.ctx.GetAccessToken()
 	//fmt.Println(accessToken)
 	if err != nil {

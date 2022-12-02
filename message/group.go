@@ -37,6 +37,7 @@ func (r *Client) CreateGroup(options CreateGroupOptions) (info CreateGroupSchema
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, createGroupAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -69,6 +70,7 @@ func (r *Client) UpdateGroup(options UpdateGroupOptions) (info util.CommonError,
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, updateGroupAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -109,6 +111,7 @@ func (r *Client) GetGroup(options GetGroupOptions) (info GetGroupSchema, err err
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getGroupAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -246,6 +249,7 @@ func (r *Client) SendGroupMessage(options interface{}) (info util.CommonError, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, sendGroupMessageAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

@@ -83,6 +83,7 @@ func (r *Client) GetGroupChatList(options ExternalcontactGetGroupChatOptions) (i
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, ExternalcontactGetGroupChatAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -106,6 +107,7 @@ func (r *Client) GetGroupChatDetail(options ExternalcontactGetGroupChatDetailOpt
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, ExternalcontactGetGroupChatDetailAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

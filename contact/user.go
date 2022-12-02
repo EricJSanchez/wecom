@@ -71,6 +71,7 @@ func (r *Client) UserCreate(options UserCreateOptions) (info util.CommonError, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userCreateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -106,6 +107,7 @@ func (r *Client) UserGet(options UserGetOptions) (info UserGetSchema, err error)
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userGetAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -135,6 +137,7 @@ func (r *Client) UserUpdate(options UserUpdateOptions) (info util.CommonError, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userUpdateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -164,6 +167,7 @@ func (r *Client) EnableUser(optionJson string) (info util.CommonError, err error
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userUpdateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -192,6 +196,7 @@ func (r *Client) UserDelete(options UserDeleteOptions) (info util.CommonError, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userDeleteAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -220,6 +225,7 @@ func (r *Client) UserBatchdelete(options UserBatchdeleteOptions) (info util.Comm
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userBatchdeleteAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -263,6 +269,7 @@ func (r *Client) UserSimplelist(options UserSimplelistOptions) (info UserSimplel
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userSimplelistAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -304,6 +311,7 @@ func (r *Client) UserList(options UserListOptions) (info UserListSchema, err err
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -346,6 +354,7 @@ func (r *Client) UserListId(options UserListIdOptions) (info UserListIdSchema, e
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userListIdAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -385,6 +394,7 @@ func (r *Client) UserConvertToOpenid(options UserConvertToOpenidOptions) (info U
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userConvertToOpenidAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -419,6 +429,7 @@ func (r *Client) UserConvertToUserid(options UserConvertToUseridOptions) (info U
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userConvertToUseridAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -447,6 +458,7 @@ func (r *Client) UserAuthsucc(options UserAuthsuccOptions) (info util.CommonErro
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userAuthsuccAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -485,6 +497,7 @@ func (r *Client) BatchInvite(options BatchInviteOptions) (info BatchInviteSchema
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, batchInviteAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -519,6 +532,7 @@ func (r *Client) CorpGetJoinQrcode(options CorpGetJoinQrcodeOptions) (info CorpG
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, corpGetJoinQrcodeAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -553,6 +567,7 @@ func (r *Client) UserGetActiveStat(options UserGetActiveStatOptions) (info UserG
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, userGetActiveStatAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

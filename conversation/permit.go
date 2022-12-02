@@ -31,6 +31,7 @@ func (r *Client) MsgAuditGetPermitUserList(options MsgAuditGetPermitUserListOpti
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, msgAuditGetPermitUserListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -77,6 +78,7 @@ func (r *Client) MsgCheckSingleAgreeList(options MsgCheckSingleAgreeOptions) (in
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, msgAuditCheckSingleAgreeAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

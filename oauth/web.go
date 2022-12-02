@@ -63,6 +63,7 @@ func (r *Client) Getuserinfo(options GetuserinfoOptions) (info GetuserinfoSchema
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getuserinfoAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -126,6 +127,7 @@ func (r *Client) GetUserDetail(options GetUserDetailOptions) (info GetUserDetail
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, getUserDetailAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

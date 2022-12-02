@@ -47,6 +47,7 @@ func (r *Client) ExternalcontactGetUserBehaviorData(options ExternalcontactGetUs
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGetUserBehaviorDataAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -112,6 +113,7 @@ func (r *Client) ExternalcontactGroupchatStatistic(options ExternalcontactGroupc
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGroupchatStatisticAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -168,6 +170,7 @@ func (r *Client) ExternalcontactGroupchatStatisticGroupByDay(options Externalcon
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactGroupchatStatisticGroupByDayAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

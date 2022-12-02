@@ -98,7 +98,7 @@ type ExternalcontactDelTagAndGroupListOptions struct {
 	GroupID []string `json:"group_id"` // 要查询的标签组id，返回该标签组以及其下的所有标签信息
 }
 
-//ExternalcontactMarkTagListOptions 请确保external_userid是userid的外部联系人。 add_tag和remove_tag不可同时为空。 同一个标签组下现已支持多个标签
+// ExternalcontactMarkTagListOptions 请确保external_userid是userid的外部联系人。 add_tag和remove_tag不可同时为空。 同一个标签组下现已支持多个标签
 type ExternalcontactMarkTagListOptions struct {
 	UserId         string   `json:"userid"`          // 添加外部联系人的userid
 	ExternalUserid string   `json:"external_userid"` // 外部联系人userid
@@ -112,6 +112,7 @@ func (r *Client) GetTagList(options ExternalcontactGetTagListOptions) (info Exte
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactGetTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -135,6 +136,7 @@ func (r *Client) AddTagList(options ExternalcontactAddTagWithGroupListOptions) (
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactAddTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -159,6 +161,7 @@ func (r *Client) AddTagListAndGroup(options ExternalcontactAddTagAndGroupListOpt
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactAddTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -183,6 +186,7 @@ func (r *Client) EditTagListOrGroup(options ExternalcontactEditTagAndGroupListOp
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactEditTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -205,6 +209,7 @@ func (r *Client) DeleteTagListOrGroup(options ExternalcontactDelTagAndGroupListO
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactDelTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -227,6 +232,7 @@ func (r *Client) MarkTagListExternalContact(options ExternalcontactMarkTagListOp
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalContactMarkTagListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

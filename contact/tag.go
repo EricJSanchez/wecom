@@ -42,6 +42,7 @@ func (r *Client) CreateTag(options CreateTagOption) (info TagCommonError, err er
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, tagCreateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

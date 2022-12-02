@@ -42,6 +42,7 @@ func (r *Client) ExternalcontactMomentStrategyList(options ExternalcontactMoment
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyListAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -92,6 +93,7 @@ func (r *Client) ExternalcontactMomentStrategyGet(options ExternalcontactMomentS
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyGetAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -131,6 +133,7 @@ func (r *Client) ExternalcontactMomentStrategyGetRange(options ExternalcontactMo
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyGetRangeAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -169,6 +172,7 @@ func (r *Client) ExternalcontactMomentStrategyCreate(options ExternalcontactMome
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyCreateAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	fmt.Println("options", options)
 	if err != nil {
@@ -203,6 +207,7 @@ func (r *Client) ExternalcontactMomentStrategyEdit(options ExternalcontactMoment
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyEditAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -231,6 +236,7 @@ func (r *Client) ExternalcontactMomentStrategyDel(options ExternalcontactMomentS
 		accessToken string
 		data        []byte
 	)
+	_ = util.Record(r.cache, externalcontactMomentStrategyDelAddr)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return

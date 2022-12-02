@@ -11,6 +11,14 @@ import (
 
 // Record 记录接口调用频率
 func Record(cache cache.Cache, url string) (err error) {
+	defer func() {
+		if err1 := recover(); err1 != nil {
+			// 释放分布式锁
+			errString := "panic err:" + fmt.Sprintf("%s", err1)
+			fmt.Println("wecom count err: ", errString)
+			err = errors.New(errString)
+		}
+	}()
 	// 提取路径
 	urlInfo, err := url2.Parse(url)
 	if err != nil {

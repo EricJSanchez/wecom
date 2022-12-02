@@ -39,6 +39,7 @@ type Media struct {
 // MediaUpload 临时素材上传
 func (r *Client) MediaUpload(mediaType MediaType, filename string) (media Media, err error) {
 	var accessToken string
+	_ = util.Record(r.cache, mediaUploadURL)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -65,6 +66,7 @@ func (r *Client) MediaUpload(mediaType MediaType, filename string) (media Media,
 // NOTICE: URL 不可公开，因为含access_token 需要立即另存文件
 func (r *Client) GetMediaURL(mediaID string) (mediaURL string, err error) {
 	var accessToken string
+	_ = util.Record(r.cache, mediaGetURL)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
@@ -83,6 +85,7 @@ type resMediaImage struct {
 // ImageUpload 图片上传
 func (r *Client) ImageUpload(filename string) (url string, err error) {
 	var accessToken string
+	_ = util.Record(r.cache, mediaUploadImageURL)
 	accessToken, err = r.ctx.GetAccessToken()
 	if err != nil {
 		return
