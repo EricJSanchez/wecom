@@ -25,9 +25,9 @@ func Wework(names ...string) *wecom.Wecom {
 
 func NewInstance(name, agentId string) *wecom.Wecom {
 	redisCache := cache.NewRedis(&cache.RedisOpts{
-		Host:        "127.0.0.1:6379",
+		Host:        "192.168.100.107:6379",
 		Password:    "111111",
-		Database:    4,
+		Database:    0,
 		MaxIdle:     40,
 		MaxActive:   100,
 		IdleTimeout: 240,

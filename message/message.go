@@ -355,6 +355,7 @@ type TemplateCardFunction struct {
 
 // SendMessage 发送应用消息
 func (r *Client) SendMessage(options interface{}) (info BaseMessageSchema, err error) {
+	util.Record(r.ctx.Cache, sendMessageAddr)
 	var (
 		accessToken string
 		data        []byte

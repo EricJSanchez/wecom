@@ -7,12 +7,11 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-//Redis redis cache
 type Redis struct {
 	conn *redis.Pool
 }
 
-//RedisOpts redis 连接属性
+// RedisOpts redis 连接属性
 type RedisOpts struct {
 	Host        string `yml:"host" json:"host"`
 	Password    string `yml:"password" json:"password"`
@@ -22,7 +21,7 @@ type RedisOpts struct {
 	IdleTimeout int    `yml:"idle_timeout" json:"idle_timeout"` //second
 }
 
-//NewRedis 实例化
+// NewRedis 实例化
 func NewRedis(opts *RedisOpts) *Redis {
 	pool := &redis.Pool{
 		MaxActive:   opts.MaxActive,
@@ -45,17 +44,17 @@ func NewRedis(opts *RedisOpts) *Redis {
 	return &Redis{pool}
 }
 
-//SetRedisPool 设置redis连接池
+// SetRedisPool 设置redis连接池
 func (r *Redis) SetRedisPool(pool *redis.Pool) {
 	r.conn = pool
 }
 
-//SetConn 设置conn
+// SetConn 设置conn
 func (r *Redis) SetConn(conn *redis.Pool) {
 	r.conn = conn
 }
 
-//Get 获取一个值
+// Get 获取一个值
 func (r *Redis) Get(key string) interface{} {
 	conn := r.conn.Get()
 	defer conn.Close()
@@ -73,7 +72,7 @@ func (r *Redis) Get(key string) interface{} {
 	return reply
 }
 
-//Set 设置一个值
+// Set 设置一个值
 func (r *Redis) Set(key string, val interface{}, timeout time.Duration) (err error) {
 	conn := r.conn.Get()
 	defer conn.Close()
@@ -88,7 +87,7 @@ func (r *Redis) Set(key string, val interface{}, timeout time.Duration) (err err
 	return
 }
 
-//IsExist 判断key是否存在
+// IsExist 判断key是否存在
 func (r *Redis) IsExist(key string) bool {
 	conn := r.conn.Get()
 	defer conn.Close()
@@ -98,7 +97,7 @@ func (r *Redis) IsExist(key string) bool {
 	return i > 0
 }
 
-//Delete 删除
+// Delete 删除
 func (r *Redis) Delete(key string) error {
 	conn := r.conn.Get()
 	defer conn.Close()
@@ -108,4 +107,20 @@ func (r *Redis) Delete(key string) error {
 	}
 
 	return nil
+}
+
+// ZAdd 添加有序集合
+func (r *Redis) ZAdd(keyParam []interface{}) (ret interface{}, err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+	ret, err = conn.Do("Zadd", keyParam...)
+	return
+}
+
+// Expire 设置 ddl
+func (r *Redis) Expire(key string, exp int) (err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+	_, err = conn.Do("Expire", key, exp)
+	return
 }
