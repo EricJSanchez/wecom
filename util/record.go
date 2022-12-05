@@ -47,7 +47,7 @@ func Record(cache cache.Cache, url string) (err error) {
 func getTodayMin() string {
 	t2 := time.Now()
 	zeroTime := time.Date(t2.Year(), t2.Month(), t2.Day(), 0, 0, 0, 0, t2.Location())
-	min := math.Ceil(time.Now().Sub(zeroTime).Minutes())
+	min := time.Now().Sub(zeroTime).Minutes()
 	minString := fmt.Sprintf("%.0f", min)
 	return minString
 }
