@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/EricJSanchez/wecom/util"
+	"github.com/spf13/cast"
 	"time"
 )
 
@@ -267,6 +268,14 @@ func (r *Client) SearchStaff(key string) (searchStaff SearchStaffRes, err error)
 	}
 	uri := fmt.Sprintf(searchStaffListUrl, time.Now().UnixMilli())
 	rspOrigin, err := util.PostFormEncodeWithHeader(uri, tmpBody, header)
+	if err != nil {
+		fmt.Println("拉取企业微信员工信息出错 ", err)
+		fmt.Println("拉取企业微信员工信息 ", cast.ToString(rspOrigin))
+	}
 	err = json.Unmarshal(rspOrigin, &searchStaff)
+	if err != nil {
+		fmt.Println("解析出错 ", err)
+		fmt.Println("解析信息出错", cast.ToString(rspOrigin))
+	}
 	return
 }
