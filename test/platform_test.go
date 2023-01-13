@@ -40,7 +40,7 @@ func TestSearchStaff(t *testing.T) {
 		return
 	}
 	// 注意 partyId为后台给的部门 ID
-	deptStaffList, err := weCom.SearchStaff("Eric")
+	deptStaffList, err := weCom.SearchStaff("JianMingZhiXin")
 	if err != nil {
 		t.Error(err)
 		return
