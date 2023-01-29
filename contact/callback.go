@@ -1,6 +1,7 @@
 package contact
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
 	"github.com/EricJSanchez/wecom/util"
@@ -198,6 +199,15 @@ func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encrypted
 		fmt.Println("GetCallbackMessage DecryptMsg:", err)
 		return rawData, msg, NewSDKErr(40016)
 	}
+	fmt.Println(rawData)
+	newByte := bytes.ReplaceAll(rawData, []byte{0}, []byte{32})
+	newByte = bytes.TrimSpace(newByte)
+	newResult := string(newByte)
+	if len(newResult) > 64 {
+		newResult = newResult[:64]
+	}
+	rawData = []byte(newResult)
+	fmt.Println(rawData)
 	if err = xml.Unmarshal(rawData, &msg); err != nil {
 		fmt.Println("contract GetCallbackMessage Unmarshal 2:", err, cast.ToString(rawData))
 		return rawData, msg, err
