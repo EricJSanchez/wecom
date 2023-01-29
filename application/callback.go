@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/EricJSanchez/wecom/util"
+	"github.com/spf13/cast"
 )
 
 // SignatureOptions 微信服务器验证参数
@@ -195,7 +196,7 @@ type TagShuffleCallbackMessage struct {
 func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encryptedMsg []byte) (rawData []byte, msg CallbackMessage, err error) {
 	var origin callbackOriginMessage
 	if err = xml.Unmarshal(encryptedMsg, &origin); err != nil {
-		fmt.Println("GetCallbackMessage Unmarshal 1:", err)
+		fmt.Println("application GetCallbackMessage Unmarshal 1:", err, cast.ToString(encryptedMsg))
 		return rawData, msg, err
 	}
 	signatureOptions.Encrypt = origin.Encrypt
