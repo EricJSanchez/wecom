@@ -212,7 +212,7 @@ func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encrypted
 		return rawData, msg, NewSDKErr(40016)
 	}
 	if err = xml.Unmarshal(rawData, &msg); err != nil {
-		fmt.Println("GetCallbackMessage Unmarshal 2:", err)
+		fmt.Println("application GetCallbackMessage Unmarshal 2:", err, cast.ToString(rawData))
 		return rawData, msg, err
 	}
 
