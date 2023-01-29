@@ -202,11 +202,7 @@ func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encrypted
 	fmt.Println(rawData)
 	newByte := bytes.ReplaceAll(rawData, []byte{0}, []byte{32})
 	newByte = bytes.TrimSpace(newByte)
-	newResult := string(newByte)
-	if len(newResult) > 64 {
-		newResult = newResult[:64]
-	}
-	rawData = []byte(newResult)
+	rawData = newByte
 	fmt.Println(rawData)
 	if err = xml.Unmarshal(rawData, &msg); err != nil {
 		fmt.Println("contract GetCallbackMessage Unmarshal 2:", err, cast.ToString(rawData))
