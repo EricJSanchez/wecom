@@ -1,6 +1,7 @@
 package test
 
 import (
+	"github.com/EricJSanchez/wecom/externalcontact"
 	"testing"
 )
 
@@ -101,6 +102,65 @@ func TestGetAppAdminInfo(t *testing.T) {
 		return
 	}
 	adminList, err := weCom.GetAppAdminInfo("305")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(adminList)
+}
+
+func TestAddMomentTask(t *testing.T) {
+	weCom, err := Wework("ww******5305").GetExternalContact()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	adminList, err := weCom.AddMomentTask(externalcontact.AddMomentTask{
+		Text: externalcontact.Text{
+			Content: "abc1",
+		},
+		Attachments: nil,
+		VisibleRange: externalcontact.AddMomentTaskVisibleRange{
+			SenderList: externalcontact.AddMomentTaskSenderList{
+				UserList:       []string{"DengHui"},
+				DepartmentList: nil,
+			},
+			ExternalContactList: externalcontact.AddMomentTaskExternalContactList{
+				TagList: nil,
+			},
+		},
+	})
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(adminList)
+}
+
+func TestGetMomentTaskResult(t *testing.T) {
+	weCom, err := Wework("ww******5305").GetExternalContact()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	adminList, err := weCom.GetMomentTaskResult("aof_Y*****j-UjjFnA")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(adminList)
+}
+
+func TestGetMomentComments(t *testing.T) {
+	weCom, err := Wework("ww******5305").GetExternalContact()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	adminList, err := weCom.GetMomentComments(externalcontact.MomentCommentsOption{
+		MomentId: "mom0**********5ehNXHQ",
+		Userid:   "De**i1",
+	})
 	if err != nil {
 		t.Error(err)
 		return

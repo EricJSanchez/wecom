@@ -26,7 +26,7 @@ func Wework(names ...string) *wecom.Wecom {
 func NewInstance(name, agentId string) *wecom.Wecom {
 	redisCache := cache.NewRedis(&cache.RedisOpts{
 		Host:        "192.168.100.107:6379",
-		Password:    "111111",
+		Password:    "t[]******#[p",
 		Database:    0,
 		MaxIdle:     40,
 		MaxActive:   100,
@@ -44,8 +44,8 @@ func NewInstance(name, agentId string) *wecom.Wecom {
 		RasPrivateKey:  "",
 		Token:          "",
 		EncodingAESKey: "",
-		ContactSecret:  "YNW************Z0",
-		CustomerSecret: "",
+		ContactSecret:  "zhAK******yFgHarM",
+		CustomerSecret: "Zdf3ur****7d5Vp4M",
 		Cookie:         "",
 	})
 	return wk

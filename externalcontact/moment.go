@@ -2,6 +2,7 @@ package externalcontact
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/EricJSanchez/wecom/util"
 )
@@ -19,6 +20,10 @@ const (
 	externalcontactMomentStrategyEditAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/moment_strategy/edit?access_token=%s"
 	//删除规则组
 	externalcontactMomentStrategyDelAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/moment_strategy/del?access_token=%s"
+	// 提醒员工发朋友圈
+	externalAddMomentTaskAddr       = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_moment_task?access_token=%s"
+	externalGetMomentTaskResultAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task_result?access_token=%s&jobid=%s"
+	externalGetCommentsAddr         = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_comments?access_token=%s"
 )
 
 // ExternalcontactMomentStrategyListOptions 获取规则组列表请求参数
@@ -252,4 +257,163 @@ func (r *Client) ExternalcontactMomentStrategyDel(options ExternalcontactMomentS
 		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
 	}
 	return info, nil
+}
+
+type AddMomentTask struct {
+	Text         Text                       `json:"text"`
+	Attachments  []AddMomentTaskAttachments `json:"attachments"`
+	VisibleRange AddMomentTaskVisibleRange  `json:"visible_range"`
+}
+type AddMomentTaskText struct {
+	Content string `json:"content"`
+}
+type AddMomentTaskImage struct {
+	MediaID string `json:"media_id"`
+}
+type AddMomentTaskVideo struct {
+	MediaID string `json:"media_id"`
+}
+type AddMomentTaskLink struct {
+	Title   string `json:"title"`
+	URL     string `json:"url"`
+	MediaID string `json:"media_id"`
+}
+type AddMomentTaskAttachments struct {
+	Msgtype string             `json:"msgtype"`
+	Image   AddMomentTaskImage `json:"image,omitempty"`
+	Video   AddMomentTaskVideo `json:"video,omitempty"`
+	Link    AddMomentTaskLink  `json:"link,omitempty"`
+}
+type AddMomentTaskSenderList struct {
+	UserList       []string `json:"user_list"`
+	DepartmentList []int    `json:"department_list"`
+}
+type AddMomentTaskExternalContactList struct {
+	TagList []string `json:"tag_list"`
+}
+type AddMomentTaskVisibleRange struct {
+	SenderList          AddMomentTaskSenderList          `json:"sender_list"`
+	ExternalContactList AddMomentTaskExternalContactList `json:"external_contact_list"`
+}
+
+type AddMomentTaskReturn struct {
+	util.CommonError
+	Jobid string `json:"jobid"`
+}
+
+// AddMomentTask 添加朋友圈发布任务
+func (r *Client) AddMomentTask(options AddMomentTask) (info AddMomentTaskReturn, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, externalAddMomentTaskAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+
+	if err != nil {
+		return
+	}
+	data, err = util.PostJSON(fmt.Sprintf(externalAddMomentTaskAddr, accessToken), options)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		err = errors.New(info.ErrMsg)
+	}
+	return
+}
+
+type AddMomentTaskResult struct {
+	util.CommonError
+	Status int    `json:"status"`
+	Type   string `json:"type"`
+	Result Result `json:"result"`
+}
+type InvalidSenderList struct {
+	UserList       []string `json:"user_list"`
+	DepartmentList []int    `json:"department_list"`
+}
+type InvalidExternalContactList struct {
+	TagList []string `json:"tag_list"`
+}
+type Result struct {
+	Errcode                    int                        `json:"errcode"`
+	Errmsg                     string                     `json:"errmsg"`
+	MomentID                   string                     `json:"moment_id"`
+	InvalidSenderList          InvalidSenderList          `json:"invalid_sender_list"`
+	InvalidExternalContactList InvalidExternalContactList `json:"invalid_external_contact_list"`
+}
+
+// GetMomentTaskResult 获取添加朋友圈发布任务结果
+func (r *Client) GetMomentTaskResult(jobId string) (info AddMomentTaskResult, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, externalGetMomentTaskResultAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPGet(fmt.Sprintf(externalGetMomentTaskResultAddr, accessToken, jobId))
+	if err != nil {
+		return
+	}
+	fmt.Println(string(data))
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		err = errors.New(info.ErrMsg)
+	}
+	return
+}
+
+type MomentConmmentsRes struct {
+	util.CommonError
+	CommentList []CommentList `json:"comment_list"`
+	LikeList    []LikeList    `json:"like_list"`
+}
+type CommentList struct {
+	ExternalUserid string `json:"external_userid,omitempty"`
+	CreateTime     int    `json:"create_time"`
+	Userid         string `json:"userid,omitempty"`
+}
+type LikeList struct {
+	ExternalUserid string `json:"external_userid,omitempty"`
+	CreateTime     int    `json:"create_time"`
+	Userid         string `json:"userid,omitempty"`
+}
+
+type MomentCommentsOption struct {
+	MomentId string `json:"moment_id,omitempty"`
+	Userid   string `json:"userid,omitempty"`
+}
+
+// GetMomentComments  获取朋友圈互动列表
+func (r *Client) GetMomentComments(options MomentCommentsOption) (info MomentConmmentsRes, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, externalGetCommentsAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	data, err = util.PostJSON(fmt.Sprintf(externalGetCommentsAddr, accessToken), options)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		err = errors.New(info.ErrMsg)
+	}
+	return
 }
