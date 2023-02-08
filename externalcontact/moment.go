@@ -21,9 +21,13 @@ const (
 	//删除规则组
 	externalcontactMomentStrategyDelAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/moment_strategy/del?access_token=%s"
 	// 提醒员工发朋友圈
-	externalAddMomentTaskAddr       = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_moment_task?access_token=%s"
+	externalAddMomentTaskAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_moment_task?access_token=%s"
+	// 获取momentId
 	externalGetMomentTaskResultAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task_result?access_token=%s&jobid=%s"
-	externalGetCommentsAddr         = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_comments?access_token=%s"
+	// 获取企业发表的朋友圈成员执行情况
+	externalGetMomentTaskAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task?access_token=%s"
+	// 获取点赞评论详情
+	externalGetCommentsAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_comments?access_token=%s"
 )
 
 // ExternalcontactMomentStrategyListOptions 获取规则组列表请求参数
@@ -406,6 +410,46 @@ func (r *Client) GetMomentComments(options MomentCommentsOption) (info MomentCon
 		return
 	}
 	data, err = util.PostJSON(fmt.Sprintf(externalGetCommentsAddr, accessToken), options)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		err = errors.New(info.ErrMsg)
+	}
+	return
+}
+
+type GetMomentTaskOption struct {
+	MomentId string `json:"moment_id"`
+	Cursor   string `json:"cursor"`
+	Limit    int    `json:"limit"`
+}
+
+type GetMomentTaskRet struct {
+	util.CommonError
+	NextCursor string     `json:"next_cursor"`
+	TaskList   []TaskList `json:"task_list"`
+}
+type TaskList struct {
+	Userid        string `json:"userid"`
+	PublishStatus int    `json:"publish_status"`
+}
+
+// GetMomentTask  获取企业发表的朋友圈成员执行情况
+func (r *Client) GetMomentTask(options GetMomentTaskOption) (info GetMomentTaskRet, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, externalGetMomentTaskAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	data, err = util.PostJSON(fmt.Sprintf(externalGetMomentTaskAddr, accessToken), options)
 	if err != nil {
 		return
 	}
