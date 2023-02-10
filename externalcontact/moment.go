@@ -28,6 +28,8 @@ const (
 	externalGetMomentTaskAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task?access_token=%s"
 	// 获取点赞评论详情
 	externalGetCommentsAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_comments?access_token=%s"
+	// 朋友圈素材上传
+	externalUploadAttachment = "https://qyapi.weixin.qq.com/cgi-bin/media/upload_attachment?access_token=%s&media_type=%s&attachment_type=1"
 )
 
 // ExternalcontactMomentStrategyListOptions 获取规则组列表请求参数
@@ -458,6 +460,53 @@ func (r *Client) GetMomentTask(options GetMomentTaskOption) (info GetMomentTaskR
 	}
 	if info.ErrCode != 0 {
 		err = errors.New(info.ErrMsg)
+	}
+	return
+}
+
+// AttachmentMediaType 媒体文件类型
+type AttachmentMediaType string
+
+const (
+	// AttachmentImage 媒体文件:图片
+	AttachmentImage AttachmentMediaType = "image"
+	// AttachmentVideo 媒体文件:视频
+	AttachmentVideo AttachmentMediaType = "video"
+	// AttachmentFile 媒体文件:文件
+	AttachmentFile AttachmentMediaType = "file"
+)
+
+// AttachmentMedia 临时素材上传返回信息
+type AttachmentMedia struct {
+	util.CommonError
+	Type      AttachmentMediaType `json:"type"`
+	MediaID   string              `json:"media_id"`
+	CreatedAt string              `json:"created_at"`
+}
+
+// UploadAttachment 朋友圈素材上传
+func (r *Client) UploadAttachment(mediaType AttachmentMediaType, filename string) (media AttachmentMedia, err error) {
+	var accessToken string
+	_ = util.Record(r.cache, externalUploadAttachment)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+
+	uri := fmt.Sprintf(externalUploadAttachment, accessToken, mediaType)
+	var response []byte
+	response, err = util.PostFile("media", filename, uri)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(response, &media)
+	if err != nil {
+		fmt.Println(string(response))
+		return
+	}
+	if media.ErrCode != 0 {
+		err = fmt.Errorf("MediaUpload error : errcode=%v , errmsg=%v", media.ErrCode, media.ErrMsg)
+		return
 	}
 	return
 }
