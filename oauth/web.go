@@ -52,6 +52,7 @@ type GetuserinfoOptions struct {
 type GetuserinfoSchema struct {
 	util.CommonError
 	UserId         string `json:"UserId"`
+	UserTicket     string `json:"user_ticket"`
 	DeviceId       string `json:"DeviceId"`
 	OpenId         string `json:"OpenId"`
 	ExternalUserid string `json:"external_userid"`
