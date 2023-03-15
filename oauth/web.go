@@ -114,6 +114,7 @@ type GetUserDetailOptions struct {
 type GetUserDetailSchema struct {
 	util.CommonError
 	Userid  string `json:"userid"`
+	Name    string `json:"name"`
 	Gender  string `json:"gender"`
 	Avatar  string `json:"avatar"`
 	QrCode  string `json:"qr_code"`
