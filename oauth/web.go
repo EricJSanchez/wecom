@@ -13,9 +13,9 @@ const (
 	authorizeAddr = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&" +
 		"response_type=code&scope=snsapi_base&state=%s#wechat_redirect"
 	// 获取用户信息
-	getuserinfoAddr = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=%s&code=%s"
+	getuserinfoAddr = "https://qyapi.weixin.qq.com/cgi-bin/auth/getuserinfo?access_token=%s&code=%s"
 	// 获取用户敏感信息
-	getUserDetailAddr = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserdetail?access_token=%s"
+	getUserDetailAddr = "https://qyapi.weixin.qq.com/cgi-bin/auth/getuserdetail?access_token=%s"
 )
 
 // AuthorizeOptions 获取授权链接请求参数
