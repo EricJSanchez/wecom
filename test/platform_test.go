@@ -167,3 +167,32 @@ func TestGetMomentComments(t *testing.T) {
 	}
 	Pr(adminList)
 }
+
+func TestGetRoleList(t *testing.T) {
+	weCom, err := Wework("ww******5305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	adminList, err := weCom.GetRoleList()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(adminList.Data.RoleList.Item)
+	for _, item := range adminList.Data.RoleList.Item {
+		if item.RoleName == "超级管理组" {
+
+		} else {
+			for _, item1 := range item.AdminList.Item {
+
+				ss, _ := weCom.SearchStaff(item1.Name)
+				for _, staff := range ss.Data {
+					if staff.Vid == item1.ID {
+
+					}
+				}
+			}
+		}
+	}
+}

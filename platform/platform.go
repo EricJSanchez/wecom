@@ -13,6 +13,7 @@ const (
 	deptCacheUrl       = "https://work.weixin.qq.com/wework_admin/contacts/party/cache?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 	deptStaffListUrl   = "https://work.weixin.qq.com/wework_admin/contacts/getDepartMember?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&action=getpartycontacts&partyid=%s&page=%d&limit=%d&joinstatus=0&fetchchild=1&preFetch=false&use_corp_cache=0&_d2st=a2300212"
 	searchStaffListUrl = "https://work.weixin.qq.com/wework_admin/search_contact?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	getRoleListUrl     = "https://work.weixin.qq.com/wework_admin/profile/role/getRoleList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&fill_manage_scope=1&_d2st=a650927"
 )
 
 var commonPlatForm = map[string]string{
@@ -276,6 +277,54 @@ func (r *Client) SearchStaff(key string) (searchStaff SearchStaffRes, err error)
 	if err != nil {
 		fmt.Println("解析出错 ", err)
 		fmt.Println("解析信息出错", cast.ToString(rspOrigin))
+	}
+	return
+}
+
+type GetRoleListRes struct {
+	Data GetRoleListData `json:"data"`
+}
+type GetRoleListData struct {
+	RoleList GetRoleListRoleList `json:"role_list"`
+}
+type GetRoleListRoleList struct {
+	Item []GetRoleListItem `json:"item"`
+}
+type GetRoleListItem struct {
+	RoleID    int                  `json:"role_id"`
+	RoleName  string               `json:"role_name"`
+	CorpID    string               `json:"corp_id"`
+	AdminList GetRoleListAdminList `json:"admin_list"`
+}
+type GetRoleListAdminList struct {
+	Item []GetRoleListItemChild `json:"item"`
+}
+type GetRoleListItemChild struct {
+	ID         string `json:"id"`
+	Flags      int    `json:"flags"`
+	Name       string `json:"name"`
+	Logo       string `json:"logo"`
+	CreateTime int    `json:"create_time"`
+}
+
+// GetRoleList  获取管理员列表
+func (r *Client) GetRoleList() (ret GetRoleListRes, err error) {
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	uri := fmt.Sprintf(getRoleListUrl, time.Now().UnixMilli())
+	rspOrigin, err := util.GetWithHeader(uri, header)
+	err = json.Unmarshal(rspOrigin, &ret)
+	if len(ret.Data.RoleList.Item) == 0 {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	if err != nil {
+		return
 	}
 	return
 }
