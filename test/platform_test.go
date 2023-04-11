@@ -1,8 +1,12 @@
 package test
 
 import (
+	"fmt"
 	"github.com/EricJSanchez/wecom/externalcontact"
+	"github.com/EricJSanchez/wecom/platform"
+	"github.com/spf13/cast"
 	"testing"
+	"time"
 )
 
 func TestDeptCache(t *testing.T) {
@@ -195,4 +199,141 @@ func TestGetRoleList(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestBatchChangeUsername(t *testing.T) {
+	i := 0
+	for {
+		Pr("新一轮开始了。。。。。。。")
+		time.Sleep(1 * time.Second)
+		weCom, err := Wework("ww******5305").GetPlatform()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		memberList, err := weCom.SearchStaff("微信用户")
+		if err != nil || len(memberList.Data) == 0 {
+			return
+		}
+		for _, v := range memberList.Data {
+			if v.Vid != "" && v.Acctid != "" && v.IsJoinQyh == true {
+				i++
+				fmt.Println(v.Name, v.Acctid, SaveMember(v.Vid), i)
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}
+}
+
+// func TestSaveMember(t *testing.T) {
+func SaveMember(vid string) (err error) {
+	//a := true
+	//b := false
+	//a1 := cast.ToString(a)
+	//b1 := cast.ToString(b)
+	//fmt.Println(a1, b1)
+	//return
+	weCom, err := Wework("ww******5305").GetPlatform()
+	if err != nil {
+		return
+	}
+	memberInfoData, err := weCom.GetSingleMember(vid)
+	if err != nil {
+		fmt.Println("获取用户详情失败", err)
+		return
+	}
+	memberInfo := memberInfoData.Data
+	//Pr(memberInfo)
+	fmt.Println(memberInfo)
+	if memberInfo.Name != "微信用户" {
+		return
+	}
+	if memberInfo.WxNickName == "" || memberInfo.WxNickName == "微信用户" {
+		fmt.Println("微信昵称为空", memberInfo.WxNickName)
+		return
+	}
+
+	var dispOrder []platform.SaveMemberDispOrder
+	for _, item := range memberInfo.DispOrder {
+		dispOrder = append(dispOrder, platform.SaveMemberDispOrder{
+			DepartID:   item.DepartID,
+			DispOrder:  cast.ToString(item.DispOrder),
+			IsTop:      cast.ToString(item.IsTop),
+			LeaderRank: cast.ToString(item.LeaderRank),
+		})
+	}
+
+	var saveMemberData platform.SaveMemberSchema
+	saveMemberData = platform.SaveMemberSchema{
+		JoinStatus:                          memberInfo.JoinStatus,
+		Account:                             memberInfo.Account,
+		Acctid:                              memberInfo.Acctid,
+		AcctidStat:                          cast.ToString(memberInfo.AcctidStat),
+		ActiveBiz:                           cast.ToString(memberInfo.ActiveBiz),
+		Alias:                               memberInfo.Alias,
+		Avatar:                              memberInfo.Avatar,
+		BIsQymailGray:                       "true",
+		BindStat:                            cast.ToString(memberInfo.BindStat),
+		BizMail:                             memberInfo.BizMail,
+		CountryCode:                         memberInfo.CountryCode,
+		DeleteStat:                          cast.ToString(memberInfo.DeleteStat),
+		DisableBiz:                          cast.ToString(memberInfo.DisableBiz),
+		DisableStat:                         cast.ToString(memberInfo.DisableStat),
+		DispOrder:                           dispOrder,
+		Domain:                              memberInfo.Domain,
+		Domainid:                            cast.ToString(memberInfo.Domainid),
+		Email:                               memberInfo.Email,
+		EnglishName:                         memberInfo.EnglishName,
+		ExtTel:                              memberInfo.ExtTel,
+		ExternJobTitle:                      memberInfo.ExternJobTitle,
+		ExternPosition:                      memberInfo.ExternPositionInfo.ExternPosition,
+		ExternPositionInfoBSynInnerPosition: cast.ToString(memberInfo.ExternPositionInfo.BSynInnerPosition),
+		ExternPositionInfoExternPosition:    memberInfo.ExternPositionInfo.ExternPosition,
+		ExternalAttrs:                       memberInfo.ExternalAttrs,
+		ExternalCorpInfo:                    memberInfo.ExternalCorpInfo,
+		ExternalWxfinder:                    "1",
+		Gender:                              cast.ToString(memberInfo.Gender),
+		GenderStr:                           memberInfo.GenderStr,
+		HideMobile:                          cast.ToString(memberInfo.HideMobile),
+		IdentityStat:                        cast.ToString(memberInfo.IdentityStat),
+		IgnoreAbnormalMobile:                "false",
+		Imgid:                               memberInfo.Imgid,
+		IsSearchListShow:                    "true",
+		IsJoinQyh:                           cast.ToString(memberInfo.IsJoinQyh),
+		IsQuit:                              cast.ToString(memberInfo.IsQuit),
+		IsReadyJoinAgain:                    cast.ToString(memberInfo.IsReadyJoinAgain),
+		IsWwBizmail:                         cast.ToString(memberInfo.IsWwBizmail),
+		IsWwBizmailVip:                      cast.ToString(memberInfo.IsWwBizmailVip),
+		JoinStat:                            cast.ToString(memberInfo.JoinStat),
+		LoginStat:                           cast.ToString(memberInfo.LoginStat),
+		MainpartyID:                         memberInfo.MainpartyID,
+		ManageStat:                          cast.ToString(memberInfo.ManageStat),
+		Mobile:                              memberInfo.Mobile,
+		ModelType:                           "full",
+		Name:                                memberInfo.Name,
+		Nickname:                            memberInfo.Nickname,
+		PartyList:                           memberInfo.PartyList,
+		Partyid:                             memberInfo.MainpartyID,
+		PersonalEmail:                       memberInfo.PersonalEmail,
+		Pinyin:                              memberInfo.Pinyin,
+		Position:                            memberInfo.Position,
+		PstnExtensionNumber:                 memberInfo.PstnExtensionNumber,
+		Realname:                            memberInfo.Realname,
+		Uin:                                 memberInfo.Uin,
+		UserQuitTime:                        cast.ToString(memberInfo.UserQuitTime),
+		Username:                            memberInfo.WxNickName,
+		Vid:                                 memberInfo.Vid,
+		VidBindGid:                          cast.ToString(memberInfo.VidBindGid),
+		Wechat:                              memberInfo.Wechat,
+		WxIDHash:                            memberInfo.WxIDHash,
+		WxNickName:                          memberInfo.WxNickName,
+		XcxCorpAddress:                      memberInfo.XcxCorpAddress,
+	}
+	d, err := weCom.SaveMember(saveMemberData)
+	if err != nil {
+		fmt.Println("修改用户失败", err)
+		return
+	}
+	fmt.Println(d)
+	return
 }

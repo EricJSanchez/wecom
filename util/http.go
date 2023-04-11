@@ -302,6 +302,40 @@ func PostFormEncodeWithHeader(uri string, body, headers map[string]string) (rsp 
 	return
 }
 
+type BodyStruct struct {
+	Key string `json:"key"`
+	Val string `json:"val"`
+}
+
+// PostFormEncodeWithHeaderUseSlice application/x-www-form-urlencoded请求
+func PostFormEncodeWithHeaderUseSlice(uri string, body []BodyStruct, headers map[string]string) (rsp []byte, err error) {
+	DataUrlVal := url.Values{}
+	for _, v := range body {
+		DataUrlVal.Add(v.Key, v.Val)
+	}
+	r := strings.NewReader(DataUrlVal.Encode())
+	req, err := http.NewRequest(http.MethodPost, uri, r)
+	if err != nil {
+		return
+	}
+	req.Close = true
+	req.Header.Set("content-type", "application/x-www-form-urlencoded")
+	for hk, hv := range headers {
+		// set 有就替换， add有就不做处理
+		req.Header.Set(hk, hv)
+	}
+	//fmt.Println("uri:", uri)
+	//fmt.Println("header:", headers)
+	//fmt.Println("body:", body)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+	rsp, err = io.ReadAll(resp.Body)
+	//fmt.Println("ret:", string(rsp))
+	return
+}
+
 // PostFormEncodeStringWithHeader application/x-www-form-urlencoded请求
 func PostFormEncodeStringWithHeader(uri, body string, headers map[string]string) (rsp []byte, err error) {
 	req, err := http.NewRequest(http.MethodPost, uri, strings.NewReader(body))
