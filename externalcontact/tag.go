@@ -17,7 +17,7 @@ const (
 	//删除企业标签以及标签组
 	externalContactDelTagListAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_corp_tag?access_token=%s"
 	//给用户添加或者删除企业标签
-	externalContactMarkTagListAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/mark_tag?access_token=%s&debug=1"
+	externalContactMarkTagListAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/mark_tag?access_token=%s"
 )
 
 // ExternalcontactGetTagListOptions 获取企业标签库请求参数
