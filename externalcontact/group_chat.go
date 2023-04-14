@@ -8,7 +8,7 @@ import (
 
 const (
 	//获取客户群详情
-	externalcontactGroupChatInfoAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get?access_token=%s&debug=1"
+	externalcontactGroupChatInfoAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get?access_token=%s"
 	//获取客户群详情
 	externalcontactGroupChatListAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/list?access_token=%s"
 )
