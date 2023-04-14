@@ -26,7 +26,12 @@ const (
 
 // ExternalContactGetUnassignedListOptions
 type ExternalContactGetUnassignedListOptions struct {
-	PageId   int    `json:"page_id"`   // 	分页查询，要查询页号，从0开始
+	PageId   int    `json:"page_id" omitempty` // 	分页查询，要查询页号，从0开始
+	PageSize int    `json:"page_size"`         //	每次返回的最大记录数，默认为1000，最大值为1000
+	Cursor   string `json:"cursor"`            //分页查询游标，字符串类型，适用于数据量较大的情况，如果使用该参数则无需填写page_id，该参数由上一次调用返回
+}
+
+type ExternalContactGetUnassignedListOptionsNoPage struct {
 	PageSize int    `json:"page_size"` //	每次返回的最大记录数，默认为1000，最大值为1000
 	Cursor   string `json:"cursor"`    //分页查询游标，字符串类型，适用于数据量较大的情况，如果使用该参数则无需填写page_id，该参数由上一次调用返回
 }
@@ -51,6 +56,30 @@ page_id和page_size参数仅适用于记录数小于五万条的情况,即 page_
 
 // GetUnassignedList 获取待分配的离职成员列表
 func (r *Client) GetUnassignedList(options ExternalContactGetUnassignedListOptions) (info ExternalContactGetUnassignedListSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, externalContactGetUnassignedList)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	data, err = util.PostJSON(fmt.Sprintf(externalContactGetUnassignedList, accessToken), options)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+// GetUnassignedListNoPage 获取待分配的离职成员列表
+func (r *Client) GetUnassignedListNoPage(options ExternalContactGetUnassignedListOptionsNoPage) (info ExternalContactGetUnassignedListSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
