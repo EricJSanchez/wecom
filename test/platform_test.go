@@ -337,3 +337,26 @@ func SaveMember(vid string) (err error) {
 	fmt.Println(d)
 	return
 }
+
+func TestGetCorpEncryptData(t *testing.T) {
+	weCom, err := Wework("ww******5305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	encInfo, err := weCom.GetCorpEncryptDataAppInfo()
+	infoList := encInfo.Data.BillInfo.InfoList
+	if err != nil {
+		return
+	}
+	if len(infoList) == 0 {
+		fmt.Println("没有购买留痕服务")
+		return
+	}
+	for _, item := range infoList {
+		fmt.Println(cast.ToInt(item.Licensecnt), "#", cast.ToInt(item.Usecnt))
+		if cast.ToInt(item.Licensecnt) <= cast.ToInt(item.Usecnt) {
+			fmt.Println("over license")
+		}
+	}
+}

@@ -10,12 +10,13 @@ import (
 )
 
 const (
-	deptCacheUrl       = "https://work.weixin.qq.com/wework_admin/contacts/party/cache?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	deptStaffListUrl   = "https://work.weixin.qq.com/wework_admin/contacts/getDepartMember?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&action=getpartycontacts&partyid=%s&page=%d&limit=%d&joinstatus=0&fetchchild=1&preFetch=false&use_corp_cache=0&_d2st=a2300212"
-	searchStaffListUrl = "https://work.weixin.qq.com/wework_admin/search_contact?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	getRoleListUrl     = "https://work.weixin.qq.com/wework_admin/profile/role/getRoleList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&fill_manage_scope=1&_d2st=a650927"
-	saveMemberUrl      = "https://work.weixin.qq.com/wework_admin/contacts/saveMember?method=update&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	getSingleMemberUrl = "https://work.weixin.qq.com/wework_admin/contacts/getSingleMember?id=%s&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&_d2st=a2762875"
+	deptCacheUrl                 = "https://work.weixin.qq.com/wework_admin/contacts/party/cache?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	deptStaffListUrl             = "https://work.weixin.qq.com/wework_admin/contacts/getDepartMember?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&action=getpartycontacts&partyid=%s&page=%d&limit=%d&joinstatus=0&fetchchild=1&preFetch=false&use_corp_cache=0&_d2st=a2300212"
+	searchStaffListUrl           = "https://work.weixin.qq.com/wework_admin/search_contact?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	getRoleListUrl               = "https://work.weixin.qq.com/wework_admin/profile/role/getRoleList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&fill_manage_scope=1&_d2st=a650927"
+	saveMemberUrl                = "https://work.weixin.qq.com/wework_admin/contacts/saveMember?method=update&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	getSingleMemberUrl           = "https://work.weixin.qq.com/wework_admin/contacts/getSingleMember?id=%s&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&_d2st=a2762875"
+	getCorpEncryptDataAppInfoUrl = "https://work.weixin.qq.com/wework_admin/financial/getCorpEncryptDataAppInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&flag=0&_d2st=a2045480"
 )
 
 var commonPlatForm = map[string]string{
@@ -620,6 +621,48 @@ func (r *Client) GetSingleMember(vid string) (ret GetSingleMemberRes, err error)
 		return
 	}
 	if err != nil {
+		return
+	}
+	return
+}
+
+type CorpEncryptDataAppInfoRes struct {
+	Data CorpEncryptDataAppInfoData `json:"data"`
+}
+type CorpEncryptDataAppInfoData struct {
+	BillInfo CorpEncryptDataAppInfoBillInfo `json:"billInfo"`
+}
+
+type CorpEncryptDataAppInfoBillInfo struct {
+	InfoList []CorpEncryptDataAppInfoInfoList `json:"info_list"`
+}
+
+type CorpEncryptDataAppInfoInfoList struct {
+	Type            int    `json:"type"`
+	Licensecnt      string `json:"licensecnt"` // 名额数量
+	Begintime       string `json:"begintime"`
+	Endtime         string `json:"endtime"`
+	Corptypeflag    int    `json:"corptypeflag"`
+	Usecnt          string `json:"usecnt"` // 已使用数量
+	ShrinkLicCnt    int    `json:"shrink_lic_cnt"`
+	ShrinkBegintime int    `json:"shrink_begintime"`
+	Name            string `json:"name"`
+}
+
+// GetCorpEncryptDataAppInfo  获取会话存档数量
+func (r *Client) GetCorpEncryptDataAppInfo() (ret CorpEncryptDataAppInfoRes, err error) {
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	uri := fmt.Sprintf(getCorpEncryptDataAppInfoUrl, time.Now().UnixMilli())
+	rspOrigin, err := util.GetWithHeader(uri, header)
+	err = json.Unmarshal(rspOrigin, &ret)
+	if err != nil {
+		fmt.Println(string(rspOrigin))
 		return
 	}
 	return
