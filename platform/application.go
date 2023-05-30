@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	getCorpApplicationUrl = "https://work.weixin.qq.com/wework_admin/getCorpApplication?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	saveOpenApiAppUrl     = "https://work.weixin.qq.com/wework_admin/apps/saveOpenApiApp?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	saveIpConfigUrl       = "https://work.weixin.qq.com/wework_admin/apps/saveIpConfig?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
-	getAppAdminInfoUrl    = "https://work.weixin.qq.com/wework_admin/apps/getAppAdminInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&app_id=%s&_d2st="
+	getCorpApplicationUrl  = "https://work.weixin.qq.com/wework_admin/getCorpApplication?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	saveOpenApiAppUrl      = "https://work.weixin.qq.com/wework_admin/apps/saveOpenApiApp?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	saveIpConfigUrl        = "https://work.weixin.qq.com/wework_admin/apps/saveIpConfig?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
+	getAppAdminInfoUrl     = "https://work.weixin.qq.com/wework_admin/apps/getAppAdminInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&app_id=%s&_d2st="
+	saveOpenApiAppRangeUrl = "https://work.weixin.qq.com/wework_admin/apps/saveOpenApiApp?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 )
 
 var commonPlatForm1 = map[string]string{
@@ -130,6 +131,44 @@ func (r *Client) SettingApiCallback(appId, callbackUrl, token, eAesKey string) (
 	return
 }
 
+// SettingApiCallback 设置应用API 接收
+func (r *Client) saveOpenApiAppRangeUrl(appId, callbackUrl, visibleVid, visiblePid string) (setRes SaveOpenApiAppRes, err error) {
+	rTmp, err := url.Parse(callbackUrl)
+	if err != nil {
+		return
+	}
+	callBackHost := strings.Split(rTmp.Host, ":")
+	if len(callBackHost) == 0 {
+		err = errors.New("url解析错误")
+	}
+	//var accessToken string
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	postData := map[string]string{
+		"app_id":      appId,
+		"app_open":    "1",
+		"visible_vid": visibleVid,
+		"visible_pid": visiblePid,
+		"_d2st":       "",
+	}
+	rspOrigin, err := util.PostFormEncodeWithHeader(fmt.Sprintf(saveOpenApiAppRangeUrl, time.Now().UnixMilli()), postData, header)
+	Pr(postData, string(rspOrigin))
+	if strings.Contains(string(rspOrigin), "errCode") {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	err = json.Unmarshal(rspOrigin, &setRes)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // UpCloseApp 开启或关闭应用状态
 func (r *Client) UpCloseApp(appId string, upClose string) (setRes SaveOpenApiAppRes, err error) {
 	//var accessToken string
@@ -216,6 +255,29 @@ type GetAppAdminInfoModel struct {
 
 // GetAppAdminInfo 获取应用管理员
 func (r *Client) GetAppAdminInfo(appId string) (adminRes GetAppAdminInfoRes, err error) {
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+
+	rspOrigin, err := util.GetWithHeader(fmt.Sprintf(getAppAdminInfoUrl, time.Now().UnixMilli(), appId), header)
+	Pr(string(rspOrigin))
+	if strings.Contains(string(rspOrigin), "errCode") {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	err = json.Unmarshal(rspOrigin, &adminRes)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// SaveAppRole 保存应用负责人
+func (r *Client) SaveAppRole(appId string) (adminRes GetAppAdminInfoRes, err error) {
 	cookie := r.ctx.Config.Cookie
 	var header = commonPlatForm
 	header["cookie"] = cookie
