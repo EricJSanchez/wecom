@@ -83,6 +83,20 @@ func TestSaveOpenApiApp(t *testing.T) {
 	Pr(appList)
 }
 
+func TestSaveOpenApiAppRangeUrl(t *testing.T) {
+	weCom, err := Wework("305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	appList, err := weCom.SaveOpenApiAppRangeUrl("5629502399633177", []string{"1688857292349578"}, []string{"1688854594368946"})
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	Pr(appList)
+}
+
 // 设置 IP 名名单，设置前请先 设置可信域名 或 设置接收消息服务器URL,否则会报服务器异常
 func TestSaveIpWhiteList(t *testing.T) {
 	weCom, err := Wework("305").GetPlatform()

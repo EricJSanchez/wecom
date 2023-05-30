@@ -131,17 +131,8 @@ func (r *Client) SettingApiCallback(appId, callbackUrl, token, eAesKey string) (
 	return
 }
 
-// SettingApiCallback 设置应用API 接收
-func (r *Client) saveOpenApiAppRangeUrl(appId, callbackUrl, visibleVid, visiblePid string) (setRes SaveOpenApiAppRes, err error) {
-	rTmp, err := url.Parse(callbackUrl)
-	if err != nil {
-		return
-	}
-	callBackHost := strings.Split(rTmp.Host, ":")
-	if len(callBackHost) == 0 {
-		err = errors.New("url解析错误")
-	}
-	//var accessToken string
+// SaveOpenApiAppRangeUrl 设置应用可见范围
+func (r *Client) SaveOpenApiAppRangeUrl(appId string, visibleVid, visiblePid []string) (setRes SaveOpenApiAppRes, err error) {
 	cookie := r.ctx.Config.Cookie
 	var header = commonPlatForm
 	header["cookie"] = cookie
@@ -149,15 +140,18 @@ func (r *Client) saveOpenApiAppRangeUrl(appId, callbackUrl, visibleVid, visibleP
 		err = errors.New("cookie 缺失")
 		return
 	}
-	postData := map[string]string{
-		"app_id":      appId,
-		"app_open":    "1",
-		"visible_vid": visibleVid,
-		"visible_pid": visiblePid,
-		"_d2st":       "",
+	dataUrlVal := url.Values{}
+	dataUrlVal.Add("app_id", appId)
+	dataUrlVal.Add("app_open", "1")
+	for _, id := range visibleVid {
+		dataUrlVal.Add("visible_vid[]", id)
 	}
-	rspOrigin, err := util.PostFormEncodeWithHeader(fmt.Sprintf(saveOpenApiAppRangeUrl, time.Now().UnixMilli()), postData, header)
-	Pr(postData, string(rspOrigin))
+	for _, id := range visiblePid {
+		dataUrlVal.Add("visible_pid[]", id)
+	}
+	dataUrlVal.Add("_d2st", "")
+	rspOrigin, err := util.PostFormEncodeStringWithHeader(fmt.Sprintf(saveOpenApiAppRangeUrl, time.Now().UnixMilli()), dataUrlVal.Encode(), header)
+	Pr(dataUrlVal, string(rspOrigin))
 	if strings.Contains(string(rspOrigin), "errCode") {
 		err = errors.New("请求出错:" + string(rspOrigin))
 		return
