@@ -374,3 +374,18 @@ func TestGetCorpEncryptData(t *testing.T) {
 		}
 	}
 }
+
+func TestApplyList(t *testing.T) {
+	weCom, err := Wework("wwd384e73ed3cf5305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	ret, err := weCom.GetApplyList(0, 10)
+	if err != nil {
+		return
+	}
+	fmt.Println(ret)
+
+}

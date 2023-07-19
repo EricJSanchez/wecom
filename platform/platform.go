@@ -17,6 +17,7 @@ const (
 	saveMemberUrl                = "https://work.weixin.qq.com/wework_admin/contacts/saveMember?method=update&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 	getSingleMemberUrl           = "https://work.weixin.qq.com/wework_admin/contacts/getSingleMember?id=%s&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&_d2st=a2762875"
 	getCorpEncryptDataAppInfoUrl = "https://work.weixin.qq.com/wework_admin/financial/getCorpEncryptDataAppInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&flag=0&_d2st=a2045480"
+	getApplyList                 = "https://work.weixin.qq.com/wework_admin/getApplyList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&start=%d&status=0&oper=1&_d2st=a8452539"
 )
 
 var commonPlatForm = map[string]string{
@@ -663,6 +664,51 @@ func (r *Client) GetCorpEncryptDataAppInfo() (ret CorpEncryptDataAppInfoRes, err
 	err = json.Unmarshal(rspOrigin, &ret)
 	if err != nil {
 		fmt.Println(string(rspOrigin))
+		return
+	}
+	return
+}
+
+type GetApplyInfoResp struct {
+	Data GetApplyInfoData `json:"data"`
+}
+type GetApplyInfoData struct {
+	Application []GetApplyInfo `json:"application"`
+	Total       string         `json:"total"`
+}
+
+type GetApplyInfo struct {
+	Status     string `json:"status"`
+	CreateTime int    `json:"create_time"`
+	ApplyTime  int    `json:"apply_time"`
+	Vid        string `json:"vid"`
+	Name       string `json:"name"`
+	Mobile     string `json:"mobile"`
+	HosterVid  string `json:"hoster_vid"`
+	Extra      Extra  `json:"extra"`
+}
+
+type Extra struct {
+	Remark string `json:"remark"`
+}
+
+// GetApplyList  获取邀请客户进企业的列表
+func (r *Client) GetApplyList(start, limit int) (ret GetApplyInfoResp, err error) {
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	uri := fmt.Sprintf(getApplyList, time.Now().UnixMilli(), limit, start)
+	rspOrigin, err := util.GetWithHeader(uri, header)
+	err = json.Unmarshal(rspOrigin, &ret)
+	if ret.Data.Total == "0" {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	if err != nil {
 		return
 	}
 	return
