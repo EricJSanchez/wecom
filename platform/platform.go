@@ -299,6 +299,7 @@ type GetRoleListItem struct {
 	RoleName  string               `json:"role_name"`
 	CorpID    string               `json:"corp_id"`
 	AdminList GetRoleListAdminList `json:"admin_list"`
+	RoleType  string               `json:"role_type"`
 }
 type GetRoleListAdminList struct {
 	Item []GetRoleListItemChild `json:"item"`
