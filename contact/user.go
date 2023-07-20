@@ -592,7 +592,7 @@ func (r *Client) UserGetActiveStat(options UserGetActiveStatOptions) (info UserG
 // UserSyncOptions 异步更改员工信息请求参数
 type UserSyncOptions struct {
 	MediaId  string `json:"media_id"`
-	ToInvite string `json:"to_invite"`
+	ToInvite bool   `json:"to_invite"`
 	UserSyncCallbackOptions
 }
 type UserSyncCallbackOptions struct {
