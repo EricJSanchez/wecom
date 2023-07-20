@@ -622,7 +622,7 @@ func (r *Client) UserSync(options UserSyncOptions) (info UserSyncSchema, err err
 		return
 	}
 	fmt.Println(string(optionJson))
-	data, err = util.HTTPPost(fmt.Sprintf(userListIdAddr, accessToken), string(optionJson))
+	data, err = util.HTTPPost(fmt.Sprintf(userSyncAddr, accessToken), string(optionJson))
 	if err != nil {
 		return
 	}
