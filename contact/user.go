@@ -35,6 +35,10 @@ const (
 	userGetActiveStatAddr = "https://qyapi.weixin.qq.com/cgi-bin/user/get_active_stat?access_token=%s"
 	// 2022-08 新版本
 	userListIdAddr = "https://qyapi.weixin.qq.com/cgi-bin/user/list_id?access_token=%s"
+	//增量更新成员
+	userSyncAddr = "https://qyapi.weixin.qq.com/cgi-bin/batch/syncuser?access_token=%s"
+	//获取异步任务结果
+	userSyncJobAddr = "https://qyapi.weixin.qq.com/cgi-bin/batch/getresult?access_token=%s&jobid=%s"
 )
 
 // UserCreateOptions 创建成员请求参数
@@ -573,6 +577,95 @@ func (r *Client) UserGetActiveStat(options UserGetActiveStatOptions) (info UserG
 		return
 	}
 	data, err = util.PostJSON(fmt.Sprintf(userGetActiveStatAddr, accessToken), options)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+// UserSyncOptions 异步更改员工信息请求参数
+type UserSyncOptions struct {
+	MediaId  string `json:"media_id"`
+	ToInvite string `json:"to_invite"`
+	UserSyncCallbackOptions
+}
+type UserSyncCallbackOptions struct {
+	Url            string `json:"url"`
+	Token          string `json:"token"`
+	Encodingaeskey string `json:"encodingaeskey"`
+}
+
+type UserSyncSchema struct {
+	util.CommonError
+	Jobid string `json:"jobid"`
+}
+
+// UserSync 异步更改员工信息
+func (r *Client) UserSync(options UserSyncOptions) (info UserSyncSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, userSyncAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	fmt.Println(string(optionJson))
+	data, err = util.HTTPPost(fmt.Sprintf(userListIdAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type UserSyncJobOptions struct {
+	JobId string `json:"job_id"`
+}
+
+// UserSyncJobSchema 获取异步查询结果
+type UserSyncJobSchema struct {
+	util.CommonError
+	Status     int                  `json:"status"`
+	Type       string               `json:"type"`
+	Total      int                  `json:"total"`
+	Percentage int                  `json:"percentage"`
+	Result     []UserSyncInfoSchema `json:"result"`
+}
+
+type UserSyncInfoSchema struct {
+	util.CommonError
+	Userid string `json:"userid"`
+}
+
+// GetUserSyncJob 获取异步任务结果
+func (r *Client) GetUserSyncJob(options UserSyncJobOptions) (info UserSyncJobSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, userSyncJobAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPGet(fmt.Sprintf(userSyncJobAddr, accessToken, options.JobId))
 	if err != nil {
 		return
 	}
