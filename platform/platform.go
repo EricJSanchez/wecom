@@ -17,7 +17,7 @@ const (
 	saveMemberUrl                = "https://work.weixin.qq.com/wework_admin/contacts/saveMember?method=update&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 	getSingleMemberUrl           = "https://work.weixin.qq.com/wework_admin/contacts/getSingleMember?id=%s&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&_d2st=a2762875"
 	getCorpEncryptDataAppInfoUrl = "https://work.weixin.qq.com/wework_admin/financial/getCorpEncryptDataAppInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&flag=0&_d2st=a2045480"
-	getApplyList                 = "https://work.weixin.qq.com/wework_admin/getApplyList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&start=%d&status=0&oper=1&_d2st=a8452539"
+	getApplyList                 = "https://work.weixin.qq.com/wework_admin/getApplyList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&start=%d&status=0&oper=2&_d2st=a8452539"
 )
 
 var commonPlatForm = map[string]string{
