@@ -17,7 +17,8 @@ const (
 	saveMemberUrl                = "https://work.weixin.qq.com/wework_admin/contacts/saveMember?method=update&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 	getSingleMemberUrl           = "https://work.weixin.qq.com/wework_admin/contacts/getSingleMember?id=%s&lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&_d2st=a2762875"
 	getCorpEncryptDataAppInfoUrl = "https://work.weixin.qq.com/wework_admin/financial/getCorpEncryptDataAppInfo?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&flag=0&_d2st=a2045480"
-	getApplyList                 = "https://work.weixin.qq.com/wework_admin/getApplyList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&start=%d&status=0&oper=2&_d2st=a8452539"
+	getApplyListUrl              = "https://work.weixin.qq.com/wework_admin/getApplyList?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&start=%d&status=0&oper=2&_d2st=a8452539"
+	modMemberDepartmentBatchUrl  = "https://work.weixin.qq.com/wework_admin/contacts/modMemberDepartmentBatch?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d"
 )
 
 var commonPlatForm = map[string]string{
@@ -702,10 +703,56 @@ func (r *Client) GetApplyList(start, limit int) (ret GetApplyInfoResp, err error
 		err = errors.New("cookie 缺失")
 		return
 	}
-	uri := fmt.Sprintf(getApplyList, time.Now().UnixMilli(), limit, start)
+	uri := fmt.Sprintf(getApplyListUrl, time.Now().UnixMilli(), limit, start)
 	rspOrigin, err := util.GetWithHeader(uri, header)
 	err = json.Unmarshal(rspOrigin, &ret)
 	if ret.Data.Total == "0" {
+		err = errors.New("请求出错:" + string(rspOrigin))
+		return
+	}
+	if err != nil {
+		return
+	}
+	return
+}
+
+type DepartmentBatchOption struct {
+	Members     string `json:"members"`
+	Partyids    string `json:"partyids"`
+	MainpartyId string `json:"mainparty_id"`
+	ModPartyids string `json:"mod_partyids"`
+	ModTagids   string `json:"mod_tagids"`
+}
+
+type DepartmentBatchRes struct {
+	StatusCode int                 `json:"statusCode"`
+	Result     Result              `json:"result"`
+	Data       DepartmentBatchData `json:"data"`
+}
+type Result struct {
+	ErrCode      int    `json:"errCode"`
+	HumanMessage string `json:"humanMessage"`
+}
+type DepartmentBatchData struct {
+}
+
+// ModMemberDepartmentBatch 批量修改部门
+func (r *Client) ModMemberDepartmentBatch(option DepartmentBatchOption) (dept DepartmentBatchRes, err error) {
+	//var accessToken string
+	cookie := r.ctx.Config.Cookie
+	var header = commonPlatForm
+	header["cookie"] = cookie
+	if cookie == "" {
+		err = errors.New("cookie 缺失")
+		return
+	}
+	rspOrigin, err := util.PostFormEncodeWithHeader(fmt.Sprintf(modMemberDepartmentBatchUrl, time.Now().UnixMilli()), map[string]string{
+		"members":      option.Members,
+		"partyids":     option.Partyids,
+		"mainparty_id": option.MainpartyId,
+	}, header)
+	err = json.Unmarshal(rspOrigin, &dept)
+	if dept.Result.ErrCode > 0 {
 		err = errors.New("请求出错:" + string(rspOrigin))
 		return
 	}

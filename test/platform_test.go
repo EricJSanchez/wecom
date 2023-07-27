@@ -389,3 +389,27 @@ func TestApplyList(t *testing.T) {
 	fmt.Println(ret)
 
 }
+func TestModMemberDepartmentBatch(t *testing.T) {
+	weCom, err := Wework("wwd384e73ed3cf5305").GetPlatform()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	//var membersList = []string{"1688857462443327", "1688857330465209"}
+	//data, _ := json.Marshal(membersList)
+
+	//var deptList = []string{"1688854594368946"}
+	//data2, _ := json.Marshal(deptList)
+	ret, err := weCom.ModMemberDepartmentBatch(platform.DepartmentBatchOption{
+		Members:     "1688857462443327,1688857330465209",
+		Partyids:    "1688854594368946",
+		MainpartyId: "1688856720430582",
+		ModPartyids: "",
+		ModTagids:   "",
+	})
+	if err != nil {
+		return
+	}
+	fmt.Println(ret)
+
+}
