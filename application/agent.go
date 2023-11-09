@@ -118,13 +118,13 @@ func (r *Client) GetApplicationList() (info GetApplicationListSchema, err error)
 // SetApplicationInfoOptions 设置应用详情请求参数
 type SetApplicationInfoOptions struct {
 	Agentid            int    `json:"agentid"`
-	ReportLocationFlag int    `json:"report_location_flag"`
-	LogoMediaid        string `json:"logo_mediaid"`
-	Name               string `json:"name"`
-	Description        string `json:"description"`
-	RedirectDomain     string `json:"redirect_domain"`
-	Isreportenter      int    `json:"isreportenter"`
-	HomeURL            string `json:"home_url"`
+	ReportLocationFlag int    `json:"report_location_flag,omitempty"`
+	LogoMediaid        string `json:"logo_mediaid,omitempty"`
+	Name               string `json:"name,omitempty"`
+	Description        string `json:"description,omitempty"`
+	RedirectDomain     string `json:"redirect_domain,omitempty"`
+	Isreportenter      int    `json:"isreportenter,omitempty"`
+	HomeURL            string `json:"home_url,omitempty"`
 }
 
 // SetApplicationInfoSchema 设置应用详情响应内容
