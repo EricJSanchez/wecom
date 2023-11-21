@@ -53,6 +53,13 @@ type CallbackMessage struct {
 	ChangeType   string `json:"change_type"`    // 此时固定为delete_user
 }
 
+// CallbackMessagePlus 基础+ID
+type CallbackMessagePlus struct {
+	CallbackMessage
+	UserID         string `json:"user_id"`
+	ExternalUserID string `json:"external_user_id"`
+}
+
 // AddExternalContactCallbackMessage 添加企业客户事件
 type AddExternalContactCallbackMessage struct {
 	CallbackMessage
@@ -160,7 +167,7 @@ type TagShuffleCallbackMessage struct {
 }
 
 // GetCallbackMessage 获取回调事件中的消息内容
-func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encryptedMsg []byte) (rawData []byte, msg CallbackMessage, err error) {
+func (r *Client) GetCallbackMessage(signatureOptions SignatureOptions, encryptedMsg []byte) (rawData []byte, msg CallbackMessagePlus, err error) {
 	var origin callbackOriginMessage
 	if err = xml.Unmarshal(encryptedMsg, &origin); err != nil {
 		fmt.Println("external contract GetCallbackMessage Unmarshal 1:", err, cast.ToString(encryptedMsg))
