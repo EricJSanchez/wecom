@@ -51,9 +51,9 @@ type ExternalcontactGetTagListSchema struct {
 
 // ExternalcontactAddTagWithGroupListOptions  添加企业标签
 type ExternalcontactAddTagWithGroupListOptions struct {
-	GroupID   string                             `json:"group_id"`   // 要查询的标签组id，返回该标签组以及其下的所有标签信息
-	GroupName string                             `json:"group_name"` // 标签组名称
-	Order     int                                `json:"order"`      // 标签组排序的次序值，order值大的排序靠前。有效的值范围是[0, 2^32)
+	GroupID   string                             `json:"group_id,omitempty"`   // 要查询的标签组id，返回该标签组以及其下的所有标签信息
+	GroupName string                             `json:"group_name,omitempty"` // 标签组名称
+	Order     int                                `json:"order"`                // 标签组排序的次序值，order值大的排序靠前。有效的值范围是[0, 2^32)
 	Tag       []ExternalcontactAddTagListOptions `json:"tag"`
 }
 
