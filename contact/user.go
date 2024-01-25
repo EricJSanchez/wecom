@@ -136,7 +136,8 @@ type UserUpdateOptions struct {
 }
 
 // UserUpdate 更新成员
-func (r *Client) UserUpdate(options UserUpdateOptions) (info util.CommonError, err error) {
+// 更自由，可传递 map 更新成员,绕过0值，空值
+func (r *Client) UserUpdate(userUpdateOptions interface{}) (info util.CommonError, err error) {
 	var (
 		accessToken string
 		data        []byte
@@ -146,7 +147,7 @@ func (r *Client) UserUpdate(options UserUpdateOptions) (info util.CommonError, e
 	if err != nil {
 		return
 	}
-	data, err = util.PostJSON(fmt.Sprintf(userUpdateAddr, accessToken), options)
+	data, err = util.PostJSON(fmt.Sprintf(userUpdateAddr, accessToken), userUpdateOptions)
 	if err != nil {
 		return
 	}
