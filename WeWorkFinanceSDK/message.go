@@ -314,10 +314,12 @@ type VoipDocShare struct {
 	SdkFileId string `json:"sdkfileid,omitempty"` // 共享文件的sdkfile，通过此字段进行媒体数据下载
 }
 
+type VoipTextMessageInfo struct {
+	CallDuration int32 `json:"callduration,omitempty"` // 通话时长，单位秒
+	InviteType   int32 `json:"invitetype,omitempty"`   // 1;单人视频通话 2;单人语音通话 3;多人视频通话 4;多人语音通话
+}
+
 type VoipTextMessage struct {
 	BaseMessage
-	Info struct {
-		CallDuration int32 `json:"callduration,omitempty"` // 通话时长，单位秒
-		InviteType   int32 `json:"invitetype,omitempty"`   // 1;单人视频通话 2;单人语音通话 3;多人视频通话 4;多人语音通话
-	} `json:"info,omitempty"`
+	Info VoipTextMessageInfo `json:"info,omitempty"`
 }
