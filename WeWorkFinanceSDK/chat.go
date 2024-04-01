@@ -172,3 +172,8 @@ func (c ChatMessage) GetSwitchMessage() (msg SwitchMessage) {
 	_ = json.Unmarshal(c.originData, &msg)
 	return msg
 }
+
+func (c ChatMessage) GetVoipTextMessage() (msg VoipTextMessage) {
+	_ = json.Unmarshal(c.originData, &msg)
+	return msg
+}
