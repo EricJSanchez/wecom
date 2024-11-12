@@ -24,15 +24,18 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 		return nil, NewSDKErr(50001)
 	}
 	var cacheKey string
+	var secret string
 	if cfg.AgentID != "" {
 		cacheKey = credential.CacheKeyWorkPrefix + "externalcontact:" + cfg.CorpID + ":" + cfg.AgentID
+		secret = cfg.AgentSecret
 	} else {
 		cacheKey = credential.CacheKeyWorkPrefix + "externalcontact:" + cfg.CorpID
+		secret = cfg.CustomerSecret
 	}
 	//初始化 AccessToken Handle
 	defaultAkHandle := credential.NewWorkAccessToken(
 		cfg.CorpID,
-		cfg.CustomerSecret,
+		secret,
 		cacheKey,
 		cfg.Cache)
 	ctx := &context.Context{
