@@ -25,7 +25,7 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 	}
 	var cacheKey string
 	var secret string
-	if cfg.AgentID != "" {
+	if cfg.AgentID != "" && cfg.AgentID != "0" {
 		cacheKey = credential.CacheKeyWorkPrefix + "externalcontact:" + cfg.CorpID + ":" + cfg.AgentID
 		secret = cfg.AgentSecret
 	} else {
