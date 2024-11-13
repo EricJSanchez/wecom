@@ -7,10 +7,21 @@ import (
 )
 
 const (
+	// 获取获客链接列表
 	customerAcquisitionQuotaListLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/list_link?access_token=%s"
-	customerAcquisitionQuotaGetAddr      = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=%s"
+	// 获取获客链接详情
+	customerAcquisitionQuotaGetAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=%s"
+	// 创建获客链接
+	customerAcquisitionCreateLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/create_link?access_token=%s"
+	// 编辑获客链接
+	customerAcquisitionUpdateLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/update_link?access_token=%s"
+	// 删除获客链接
+	customerAcquisitionDeleteLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/delete_link?access_token=%s"
+	// 获取由获客链接添加的客户信息
+	customerAcquisitionCustomerAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/customer?access_token=%s"
 	// 查询剩余使用量
-	customerAcquisitionQuotaAddr     = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition_quota?access_token=%s"
+	customerAcquisitionQuotaAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition_quota?access_token=%s"
+	// 查询链接使用详情
 	customerAcquisitionStatisticAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/statistic?access_token=%s"
 )
 
@@ -160,6 +171,180 @@ func (r *Client) AcquisitionQuotaStatistic(options AcquisitionQuotaStatisticOpti
 		return
 	}
 	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionStatisticAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type AcquisitionCreateLinkOptions struct {
+	LinkName string `json:"link_name"`
+	Range    struct {
+		UserList       []string `json:"user_list"`
+		DepartmentList []int    `json:"department_list"`
+	} `json:"range"`
+	SkipVerify     bool `json:"skip_verify"`
+	PriorityOption struct {
+		PriorityType       int      `json:"priority_type"`
+		PriorityUseridList []string `json:"priority_userid_list"`
+	} `json:"priority_option"`
+}
+
+type AcquisitionCreateLinkSchema struct {
+	util.CommonError
+	Link struct {
+		LinkId     string `json:"link_id"`
+		LinkName   string `json:"link_name"`
+		Url        string `json:"url"`
+		CreateTime int    `json:"create_time"`
+	} `json:"link"`
+}
+
+func (r *Client) AcquisitionCreateLink(options AcquisitionCreateLinkOptions) (info AcquisitionCreateLinkSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, customerAcquisitionCreateLinkAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionCreateLinkAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type AcquisitionUpdateLinkOptions struct {
+	LinkId   string `json:"link_id"`
+	LinkName string `json:"link_name"`
+	Range    struct {
+		UserList       []string `json:"user_list"`
+		DepartmentList []int    `json:"department_list"`
+	} `json:"range"`
+	SkipVerify     bool `json:"skip_verify"`
+	PriorityOption struct {
+		PriorityType       int      `json:"priority_type"`
+		PriorityUseridList []string `json:"priority_userid_list"`
+	} `json:"priority_option"`
+}
+
+type AcquisitionUpdateLinkSchema struct {
+	util.CommonError
+}
+
+func (r *Client) AcquisitionUpdateLink(options AcquisitionUpdateLinkOptions) (info AcquisitionUpdateLinkSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, customerAcquisitionUpdateLinkAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionUpdateLinkAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type AcquisitionDeleteLinkOptions struct {
+	LinkId string `json:"link_id"`
+}
+
+type AcquisitionDeleteLinkSchema struct {
+	util.CommonError
+}
+
+func (r *Client) AcquisitionDeleteLink(options AcquisitionDeleteLinkOptions) (info AcquisitionDeleteLinkSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, customerAcquisitionDeleteLinkAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionDeleteLinkAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
+
+type AcquisitionCustomerOptions struct {
+	LinkId string `json:"link_id"`
+	Limit  int    `json:"limit"`
+	Cursor string `json:"cursor"`
+}
+
+type AcquisitionCustomerSchema struct {
+	util.CommonError
+	CustomerList []struct {
+		ExternalUserid string `json:"external_userid"`
+		Userid         string `json:"userid"`
+		ChatStatus     int    `json:"chat_status"`
+		State          string `json:"state"`
+	} `json:"customer_list"`
+	NextCursor string `json:"next_cursor"`
+}
+
+func (r *Client) AcquisitionCustomer(options AcquisitionCustomerOptions) (info AcquisitionCustomerSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, customerAcquisitionCustomerAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(options)
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionCustomerAddr, accessToken), string(optionJson))
 	if err != nil {
 		return
 	}
