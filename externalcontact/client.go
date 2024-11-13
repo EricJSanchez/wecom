@@ -46,7 +46,7 @@ func NewClient(cfg *config.Config) (client *Client, err error) {
 	client = &Client{
 		corpID:         cfg.CorpID,
 		agentId:        cfg.AgentID,
-		secret:         cfg.CustomerSecret,
+		secret:         secret,
 		token:          cfg.Token,
 		encodingAESKey: cfg.EncodingAESKey,
 		cache:          cfg.Cache,
