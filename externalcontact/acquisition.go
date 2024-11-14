@@ -183,17 +183,22 @@ func (r *Client) AcquisitionQuotaStatistic(options AcquisitionQuotaStatisticOpti
 	return info, nil
 }
 
-type AcquisitionCreateLinkOptions struct {
-	LinkName string `json:"link_name"`
-	Range    struct {
-		UserList       []string `json:"user_list"`
-		DepartmentList []int    `json:"department_list"`
-	} `json:"range"`
-	SkipVerify     bool `json:"skip_verify"`
-	PriorityOption struct {
-		PriorityType       int      `json:"priority_type"`
-		PriorityUseridList []string `json:"priority_userid_list"`
-	} `json:"priority_option"`
+type AcquisitionUpsertLinkRange struct {
+	UserList       []string `json:"user_list"`
+	DepartmentList []int    `json:"department_list"`
+}
+
+type AcquisitionUpsertLinkPriorityOption struct {
+	UserList       []string `json:"user_list"`
+	DepartmentList []int    `json:"department_list"`
+}
+
+type AcquisitionUpsertLinkOptions struct {
+	LinkId         string                              `json:"link_id,omitempty"`
+	LinkName       string                              `json:"link_name"`
+	Range          AcquisitionUpsertLinkRange          `json:"range"`
+	SkipVerify     bool                                `json:"skip_verify"`
+	PriorityOption AcquisitionUpsertLinkPriorityOption `json:"priority_option,omitempty"`
 }
 
 type AcquisitionCreateLinkSchema struct {
@@ -206,7 +211,7 @@ type AcquisitionCreateLinkSchema struct {
 	} `json:"link"`
 }
 
-func (r *Client) AcquisitionCreateLink(options AcquisitionCreateLinkOptions) (info AcquisitionCreateLinkSchema, err error) {
+func (r *Client) AcquisitionCreateLink(options AcquisitionUpsertLinkOptions) (info AcquisitionCreateLinkSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
@@ -233,25 +238,11 @@ func (r *Client) AcquisitionCreateLink(options AcquisitionCreateLinkOptions) (in
 	return info, nil
 }
 
-type AcquisitionUpdateLinkOptions struct {
-	LinkId   string `json:"link_id"`
-	LinkName string `json:"link_name"`
-	Range    struct {
-		UserList       []string `json:"user_list"`
-		DepartmentList []int    `json:"department_list"`
-	} `json:"range"`
-	SkipVerify     bool `json:"skip_verify"`
-	PriorityOption struct {
-		PriorityType       int      `json:"priority_type"`
-		PriorityUseridList []string `json:"priority_userid_list"`
-	} `json:"priority_option"`
-}
-
 type AcquisitionUpdateLinkSchema struct {
 	util.CommonError
 }
 
-func (r *Client) AcquisitionUpdateLink(options AcquisitionUpdateLinkOptions) (info AcquisitionUpdateLinkSchema, err error) {
+func (r *Client) AcquisitionUpdateLink(options AcquisitionUpsertLinkOptions) (info AcquisitionUpdateLinkSchema, err error) {
 	var (
 		accessToken string
 		data        []byte
