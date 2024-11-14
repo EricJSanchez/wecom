@@ -197,7 +197,7 @@ type AcquisitionUpsertLinkOptions struct {
 	LinkId         string                               `json:"link_id,omitempty"`
 	LinkName       string                               `json:"link_name"`
 	Range          AcquisitionUpsertLinkRange           `json:"range"`
-	SkipVerify     bool                                 `json:"skip_verify,omitempty"`
+	SkipVerify     bool                                 `json:"skip_verify"`
 	PriorityOption *AcquisitionUpsertLinkPriorityOption `json:"priority_option,omitempty"`
 }
 
@@ -306,19 +306,21 @@ func (r *Client) AcquisitionDeleteLink(options AcquisitionDeleteLinkOptions) (in
 
 type AcquisitionCustomerOptions struct {
 	LinkId string `json:"link_id"`
-	Limit  int    `json:"limit"`
+	Limit  int    `json:"limit,omitempty"`
 	Cursor string `json:"cursor"`
 }
 
 type AcquisitionCustomerSchema struct {
 	util.CommonError
-	CustomerList []struct {
-		ExternalUserid string `json:"external_userid"`
-		Userid         string `json:"userid"`
-		ChatStatus     int    `json:"chat_status"`
-		State          string `json:"state"`
-	} `json:"customer_list"`
-	NextCursor string `json:"next_cursor"`
+	CustomerList []AcquisitionCustomerCL `json:"customer_list"`
+	NextCursor   string                  `json:"next_cursor"`
+}
+
+type AcquisitionCustomerCL struct {
+	ExternalUserid string `json:"external_userid"`
+	Userid         string `json:"userid"`
+	ChatStatus     int    `json:"chat_status"`
+	State          string `json:"state"`
 }
 
 func (r *Client) AcquisitionCustomer(options AcquisitionCustomerOptions) (info AcquisitionCustomerSchema, err error) {
