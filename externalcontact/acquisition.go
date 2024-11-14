@@ -184,21 +184,21 @@ func (r *Client) AcquisitionQuotaStatistic(options AcquisitionQuotaStatisticOpti
 }
 
 type AcquisitionUpsertLinkRange struct {
-	UserList       []string `json:"user_list"`
-	DepartmentList []int    `json:"department_list"`
+	UserList       []string `json:"user_list,omitempty"`
+	DepartmentList []int    `json:"department_list,omitempty"`
 }
 
 type AcquisitionUpsertLinkPriorityOption struct {
-	UserList       []string `json:"user_list"`
-	DepartmentList []int    `json:"department_list"`
+	UserList       []string `json:"user_list,omitempty"`
+	DepartmentList []int    `json:"department_list,omitempty"`
 }
 
 type AcquisitionUpsertLinkOptions struct {
-	LinkId         string                              `json:"link_id,omitempty"`
-	LinkName       string                              `json:"link_name"`
-	Range          AcquisitionUpsertLinkRange          `json:"range"`
-	SkipVerify     bool                                `json:"skip_verify"`
-	PriorityOption AcquisitionUpsertLinkPriorityOption `json:"priority_option,omitempty"`
+	LinkId         string                               `json:"link_id,omitempty"`
+	LinkName       string                               `json:"link_name"`
+	Range          AcquisitionUpsertLinkRange           `json:"range"`
+	SkipVerify     bool                                 `json:"skip_verify,omitempty"`
+	PriorityOption *AcquisitionUpsertLinkPriorityOption `json:"priority_option,omitempty"`
 }
 
 type AcquisitionCreateLinkSchema struct {
