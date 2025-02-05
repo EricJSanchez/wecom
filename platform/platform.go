@@ -641,15 +641,15 @@ type CorpEncryptDataAppInfoBillInfo struct {
 }
 
 type CorpEncryptDataAppInfoInfoList struct {
-	Type            int    `json:"type"`
-	Licensecnt      string `json:"licensecnt"` // 名额数量
-	Begintime       string `json:"begintime"`
-	Endtime         string `json:"endtime"`
-	Corptypeflag    int    `json:"corptypeflag"`
-	Usecnt          string `json:"usecnt"` // 已使用数量
-	ShrinkLicCnt    int    `json:"shrink_lic_cnt"`
-	ShrinkBegintime int    `json:"shrink_begintime"`
-	Name            string `json:"name"`
+	Type            int         `json:"type"`
+	Licensecnt      interface{} `json:"licensecnt"` // 名额数量
+	Begintime       string      `json:"begintime"`
+	Endtime         string      `json:"endtime"`
+	Corptypeflag    int         `json:"corptypeflag"`
+	Usecnt          interface{} `json:"usecnt"` // 已使用数量
+	ShrinkLicCnt    int         `json:"shrink_lic_cnt"`
+	ShrinkBegintime int         `json:"shrink_begintime"`
+	Name            string      `json:"name"`
 }
 
 // GetCorpEncryptDataAppInfo  获取会话存档数量
