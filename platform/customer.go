@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	getDimissionUserInfoList = "https://work.weixin.qq.com/wework_admin/customer/pending/getDimissionUserInfoListV2?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&last_id=&transfer_filter_type=3&time_since=0&time_before=%d&_d2st=a2631871"
+	getDimissionUserInfoList = "https://work.weixin.qq.com/wework_admin/customer/pending/getDimissionUserInfoListV2?lang=zh_CN&f=json&ajax=1&timeZoneInfo[zone_offset]=-8&random=0.%d&limit=%d&last_id=%s&transfer_filter_type=3&time_since=0&time_before=%d&_d2st=a2631871"
 )
 
 type DimissionRes struct {
@@ -46,7 +46,7 @@ type DimissionResDataList struct {
 }
 
 // GetDimissionUserInfoListV2 获取所有待离职继承列表
-func (r *Client) GetDimissionUserInfoListV2() (demissionRes DimissionRes, err error) {
+func (r *Client) GetDimissionUserInfoListV2(last_id string, limit int) (demissionRes DimissionRes, err error) {
 	cookie := r.ctx.Config.Cookie
 	var header = commonPlatForm
 	header["cookie"] = cookie
@@ -54,7 +54,7 @@ func (r *Client) GetDimissionUserInfoListV2() (demissionRes DimissionRes, err er
 		err = errors.New("cookie 缺失")
 		return
 	}
-	uri := fmt.Sprintf(getDimissionUserInfoList, time.Now().Nanosecond(), 20000, time.Now().Unix())
+	uri := fmt.Sprintf(getDimissionUserInfoList, time.Now().Nanosecond(), limit, last_id, time.Now().Unix())
 	rspOrigin, err := util.GetWithHeader(uri, header)
 	//Pr(uri, string(rspOrigin))
 	if strings.Contains(string(rspOrigin), "errCode") {
