@@ -10,6 +10,8 @@ const (
 	// 获取获客链接列表
 	customerAcquisitionQuotaListLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/list_link?access_token=%s"
 	// 获取获客链接详情
+	customerAcquisitionGetAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=%s"
+	// 获取获客链接详情
 	customerAcquisitionQuotaGetAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=%s"
 	// 创建获客链接
 	customerAcquisitionCreateLinkAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/create_link?access_token=%s"
@@ -24,6 +26,61 @@ const (
 	// 查询链接使用详情
 	customerAcquisitionStatisticAddr = "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/statistic?access_token=%s"
 )
+
+type AcquisitionGetOptions struct {
+	LinkId string `json:"link_id"`
+}
+
+type AcquisitionGetLink struct {
+	LinkName   string `json:"link_name"`
+	Url        string `json:"url"`
+	CreateTime int    `json:"create_time"`
+	SkipVerify bool   `json:"skip_verify"`
+}
+
+type AcquisitionGetRange struct {
+	UserList       []string `json:"user_list"`
+	DepartmentList []int    `json:"department_list"`
+}
+
+type AcquisitionGePriorityOption struct {
+	PriorityType       int      `json:"priority_type"`
+	PriorityUseridList []string `json:"priority_userid_list"`
+}
+
+type AcquisitionGetSchema struct {
+	util.CommonError
+	Link           AcquisitionGetLink          `json:"link"`
+	Range          AcquisitionGetRange         `json:"range"`
+	PriorityOption AcquisitionGePriorityOption `json:"priority_option"`
+}
+
+func (r *Client) AcquisitionGet(linkId string) (info AcquisitionGetSchema, err error) {
+	var (
+		accessToken string
+		data        []byte
+	)
+	_ = util.Record(r.cache, customerAcquisitionGetAddr)
+	accessToken, err = r.ctx.GetAccessToken()
+	if err != nil {
+		return
+	}
+	optionJson, err := json.Marshal(map[string]string{"link_id": linkId})
+	if err != nil {
+		return
+	}
+	data, err = util.HTTPPost(fmt.Sprintf(customerAcquisitionGetAddr, accessToken), string(optionJson))
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(data, &info); err != nil {
+		return
+	}
+	if info.ErrCode != 0 {
+		return info, NewSDKErr(info.ErrCode, info.ErrMsg)
+	}
+	return info, nil
+}
 
 type AcquisitionQuotaLinkListOptions struct {
 	Limit  int    `json:"limit"`
