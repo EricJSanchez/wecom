@@ -201,11 +201,11 @@ func (r *Client) ExternalcontactBatchGetByUser(options ExternalcontactBatchGetBy
 type ExternalcontactRemarkOptions struct {
 	Userid           string   `json:"userid"`
 	ExternalUserid   string   `json:"external_userid"`
-	Remark           string   `json:"remark"`
-	Description      string   `json:"description"`
-	RemarkCompany    string   `json:"remark_company"`
-	RemarkMobiles    []string `json:"remark_mobiles"`
-	RemarkPicMediaid string   `json:"remark_pic_mediaid"`
+	Remark           string   `json:"remark,omitempty"`
+	Description      string   `json:"description,omitempty"`
+	RemarkCompany    string   `json:"remark_company,omitempty"`
+	RemarkMobiles    []string `json:"remark_mobiles,omitempty"`
+	RemarkPicMediaid string   `json:"remark_pic_mediaid,omitempty"`
 }
 
 // ExternalcontactRemark 修改客户备注信息
